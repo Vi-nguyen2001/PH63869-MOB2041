@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green_primary">#27AE60</color>
+    <color name="gray_text">#757575</color>
+    <color name="gray_light">#F8F9FA</color>
+    <color name="orange_forgot">#EF6C00</color>
+    <color name="blue_dark">#1A237E</color>
+    <color name="text_title">#1A1A1A</color>
+    
+    <!-- Dashboard Icon Backgrounds (Light) -->
+    <color name="bg_cat_light">#E8F5E9</color>
+    <color name="bg_prod_light">#E8EAF6</color>
+    <color name="bg_cust_light">#E0F2F1</color>
+    <color name="bg_emp_light">#FFF3E0</color>
+    <color name="bg_inv_light">#FCE4EC</color>
+    <color name="bg_pass_light">#E3F2FD</color>
+    <color name="bg_logout_light">#FFEBEE</color>
+    
+    <color name="bg_rev_light">#E0F2F1</color>
+    <color name="bg_top_p_light">#FFF8E1</color>
+    <color name="bg_top_c_light">#E8EAF6</color>
+    <color name="bg_cat">#E8F5E9</color>
+    <color name="bg_cust">#E3F2FD</color>
+    <color name="bg_inv">#E8F5E9</color>
+    <color name="bg_logout">#FDECEA</color>
+    <color name="bg_pass">#FFF3E0</color>
+    <color name="bg_prod">#E8F0FE</color>
+</resources>

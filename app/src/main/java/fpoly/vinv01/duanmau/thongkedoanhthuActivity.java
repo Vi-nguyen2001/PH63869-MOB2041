@@ -1,0 +1,78 @@
+package fpoly.vinv01.duanmau;
+
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+public class thongkedoanhthuActivity extends AppCompatActivity {
+
+    private TextInputEditText etFromDate, etToDate;
+    private MaterialButton btnQuery;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.thongthedoangthu);
+
+        // Initialize Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        // Handle Back button
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        // Initialize Views
+        etFromDate = findViewById(R.id.etFromDate);
+        etToDate = findViewById(R.id.etToDate);
+        btnQuery = findViewById(R.id.btnQuery);
+
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+        // Set Click Listeners for Date Selection
+        etFromDate.setOnClickListener(v -> showDatePicker(etFromDate));
+        etToDate.setOnClickListener(v -> showDatePicker(etToDate));
+
+        // Query Button Listener
+        btnQuery.setOnClickListener(v -> {
+            String fromDate = etFromDate.getText().toString();
+            String toDate = etToDate.getText().toString();
+
+            if (fromDate.isEmpty() || toDate.isEmpty()) {
+                Toast.makeText(this, "Vui lòng chọn đầy đủ khoảng ngày", Toast.LENGTH_SHORT).show();
+            } else {
+                // Logic truy vấn từ Database sẽ được thêm ở đây
+                Toast.makeText(this, "Đang truy vấn dữ liệu từ " + fromDate + " đến " + toDate, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showDatePicker(final TextInputEditText editText) {
+        DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            editText.setText(dateFormat.format(calendar.getTime()));
+        };
+
+        new DatePickerDialog(this, dateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+}

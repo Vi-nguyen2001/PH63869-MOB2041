@@ -1,0 +1,86 @@
+package fpoly.vinv01.duanmau;
+
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.card.MaterialCardView;
+
+public class trangchuquanly extends AppCompatActivity {
+
+    // Khai báo các CardView cho phần Thống kê
+    private MaterialCardView cardRevenue, cardTopProduct, cardTopCustomer;
+
+    // Khai báo các CardView cho phần Quản lý
+    private MaterialCardView cardCategory, cardProduct, cardCustomer,
+            cardEmployee, cardInvoice, cardPassword, cardLogout;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.trangchuquanly);
+
+        // 1. Ánh xạ ID cho các CardView phần Thống kê
+        cardRevenue = findViewById(R.id.cardRevenue);
+        cardTopProduct = findViewById(R.id.cardTopProduct);
+        cardTopCustomer = findViewById(R.id.cardTopCustomer);
+
+        // 2. Ánh xạ ID cho các CardView phần Quản lý
+        cardCategory = findViewById(R.id.cardCategory);
+        cardProduct = findViewById(R.id.cardProduct);
+        cardCustomer = findViewById(R.id.cardCustomer);
+        cardEmployee = findViewById(R.id.cardEmployee);
+        cardInvoice = findViewById(R.id.cardInvoice);
+        cardPassword = findViewById(R.id.cardPassword);
+        cardLogout = findViewById(R.id.cardLogout);
+
+        // 3. Thiết lập sự kiện click cho các CardView
+        setupClickListeners();
+    }
+
+    private void setupClickListeners() {
+        // Sự kiện cho phần Thống kê
+        cardRevenue.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        cardTopProduct.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        cardTopCustomer.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        // Sự kiện cho phần Quản lý
+        cardCategory.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        cardProduct.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        cardCustomer.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        cardEmployee.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        cardInvoice.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        cardPassword.setOnClickListener(v -> {
+            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+        });
+
+        // Riêng mục Đăng xuất hiển thị Toast thông báo
+        cardLogout.setOnClickListener(v -> {
+            Toast.makeText(trangchuquanly.this, "Bạn vừa nhấn Đăng xuất", Toast.LENGTH_SHORT).show();
+        });
+    }
+}
