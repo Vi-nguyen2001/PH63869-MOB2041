@@ -10,6 +10,9 @@ public class DanhMuc implements Serializable {
         this.maDanhMuc = maDanhMuc;
         this.tenDanhMuc = tenDanhMuc;
     }
+    public DanhMuc() {
+    }
+
 
     public int getMaDanhMuc() {
         return maDanhMuc;

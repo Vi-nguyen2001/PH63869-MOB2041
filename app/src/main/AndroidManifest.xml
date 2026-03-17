@@ -15,7 +15,6 @@
         <activity
             android:name=".Activity.MainActivity"
             android:exported="false">
-
         </activity>
 
         <activity
@@ -41,21 +40,20 @@
 
         <activity
             android:name=".Activity.QLDanhMucActivity"
-            android:exported="false" >
+            android:exported="false" />
 
-        </activity>
         <activity android:name=".Activity.ThemSanPhamActivity" />
         <activity android:name=".Activity.SuaSanPhamActivity" />
-        <activity android:name=".Activity.QLSanPhamActivity"
-            android:exported="true">
+        <activity android:name=".Activity.QLSanPhamActivity" android:exported="false" />
+
+        <activity android:name=".Activity.QLNhanVienActivity" android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
+        <activity android:name=".Activity.ThemNhanVienActivity" android:exported="false" />
+        <activity android:name=".Activity.SuaNhanVienActivity" android:exported="false" />
             
     </application>
 
