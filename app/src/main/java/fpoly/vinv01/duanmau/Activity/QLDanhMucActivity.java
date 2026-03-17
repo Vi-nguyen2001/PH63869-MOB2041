@@ -21,7 +21,7 @@ import fpoly.vinv01.duanmau.DAO.DanhMucDAO;
 import fpoly.vinv01.duanmau.Model.DanhMuc;
 import fpoly.vinv01.duanmau.R;
 
-public class DanhMucActivity extends AppCompatActivity implements DanhMucAdapter.DanhMucItemListener {
+public class QLDanhMucActivity extends AppCompatActivity implements DanhMucAdapter.DanhMucItemListener {
 
     private ListView lvDanhMuc;
     private FloatingActionButton fabAdd;

@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         cbRememberMe = findViewById(R.id.cbRememberMe);
         btnLogin = findViewById(R.id.btnLogin);
-        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+
 
         // khởi tạo SharedPreferences
         sharedPreferences = getSharedPreferences("LOGIN", MODE_PRIVATE);
@@ -98,10 +98,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
 
-        });
-
-        tvForgotPassword.setOnClickListener(v -> {
-            Toast.makeText(this, "Chức năng đang phát triển", Toast.LENGTH_SHORT).show();
         });
     }
 }

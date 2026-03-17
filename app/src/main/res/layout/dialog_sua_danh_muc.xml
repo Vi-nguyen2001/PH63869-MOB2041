@@ -74,6 +74,8 @@
             android:text="Hủy bỏ"
             android:textAllCaps="false"
             android:textColor="@color/gray_text"
+            android:textStyle="bold"
+            android:backgroundTint="#CCCCCC"
             app:cornerRadius="12dp" />
 
         <com.google.android.material.button.MaterialButton
