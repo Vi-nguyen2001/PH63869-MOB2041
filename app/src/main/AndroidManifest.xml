@@ -37,6 +37,10 @@
         <activity
             android:name=".TopProductsActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".TopCustomerActivity"
+            android:exported="false" />
             
     </application>
 

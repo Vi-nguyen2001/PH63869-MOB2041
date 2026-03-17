@@ -3,6 +3,7 @@ package fpoly.vinv01.duanmau;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,20 +18,21 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class TopProductsActivity extends AppCompatActivity {
+public class TopCustomerActivity extends AppCompatActivity {
 
     private TextInputEditText etFromDate, etToDate, etQuantity;
     private MaterialButton btnQuery;
-    private ListView lvTopProducts;
+    private ListView lvTopCustomers;
+    private TextView tvResultCount;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
-    private List<ProductTop> productList;
-    private TopProductAdapter adapter;
+    private List<CustomerTop> customerList;
+    private TopCustomerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_top_products);
+        setContentView(R.layout.activity_top_customer);
 
         // Initialize Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -45,7 +47,8 @@ public class TopProductsActivity extends AppCompatActivity {
         etToDate = findViewById(R.id.etToDate);
         etQuantity = findViewById(R.id.etQuantity);
         btnQuery = findViewById(R.id.btnQuery);
-        lvTopProducts = findViewById(R.id.lvTopProducts);
+        lvTopCustomers = findViewById(R.id.lvTopCustomers);
+        tvResultCount = findViewById(R.id.tvResultCount);
 
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -55,17 +58,16 @@ public class TopProductsActivity extends AppCompatActivity {
         etToDate.setOnClickListener(v -> showDatePicker(etToDate));
 
         // Setup ListView with Dummy Data
-        productList = new ArrayList<>();
-        // Add sample data to test UI
-        productList.add(new ProductTop(1, 123, "Trà Xanh Thái Nguyên Đặc Biệt", 1240, R.drawable.anhsanpham));
-        productList.add(new ProductTop(2, 113, "Cà Phê Arabica Nguyên Chất", 956, R.drawable.anhsanpham));
-        productList.add(new ProductTop(3, 103, "Mật Ong Hoa Nhãn 500ml", 812, R.drawable.anhsanpham));
-        productList.add(new ProductTop(4, 102, "Hạt Điều Rang Muối Loại A", 645, R.drawable.anhsanpham));
-        productList.add(new ProductTop(5, 101, "Gạo Lứt Huyết Rồng 2kg", 432, R.drawable.anhsanpham));
+        customerList = new ArrayList<>();
+        customerList.add(new CustomerTop(1, 234, "Nguyễn Văn A", 45200000, 12, R.drawable.anhkhachhang));
+        customerList.add(new CustomerTop(2, 112, "Trần Thị B", 32850000, 8, R.drawable.anhkhachhang));
+        customerList.add(new CustomerTop(3, 890, "Lê Hoàng C", 28400000, 15, R.drawable.anhkhachhang));
+        customerList.add(new CustomerTop(4, 543, "Phạm Minh D", 15500000, 5, R.drawable.anhkhachhang));
+        customerList.add(new CustomerTop(5, 321, "Hoàng Thanh E", 12100000, 4, R.drawable.anhkhachhang));
 
-        // Use the updated BaseAdapter constructor
-        adapter = new TopProductAdapter(this, productList);
-        lvTopProducts.setAdapter(adapter);
+        adapter = new TopCustomerAdapter(this, customerList);
+        lvTopCustomers.setAdapter(adapter);
+        tvResultCount.setText("Đã tải " + customerList.size() + " kết quả");
 
         // Query Button
         btnQuery.setOnClickListener(v -> {
@@ -76,7 +78,7 @@ public class TopProductsActivity extends AppCompatActivity {
             if (fromDate.isEmpty() || toDate.isEmpty() || quantity.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Đang truy vấn Top " + quantity + " sản phẩm từ " + fromDate + " đến " + toDate, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đang truy vấn Top " + quantity + " khách hàng...", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -55,7 +55,7 @@ public class TopProductAdapter extends BaseAdapter {
             holder.tvRank.setText(String.valueOf(product.getRank()));
             holder.ivProduct.setImageResource(product.getImageResId());
             holder.tvProductName.setText(product.getName());
-            holder.tvProductId.setText("Mã: " + product.getId());
+            holder.tvProductId.setText(String.format("Mã: SP%03d", product.getId()));
             holder.tvSalesQuantity.setText(String.format("%,d", product.getSalesQuantity()));
         }
 
