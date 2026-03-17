@@ -1,4 +1,4 @@
-package fpoly.vinv01.duanmau;
+package fpoly.vinv01.duanmau.Activity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import fpoly.vinv01.duanmau.Adapter.TopCustomerAdapter;
+import fpoly.vinv01.duanmau.Model.CustomerTop;
+import fpoly.vinv01.duanmau.R;
 
 public class TopCustomerActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package fpoly.vinv01.duanmau;
+package fpoly.vinv01.duanmau.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import fpoly.vinv01.duanmau.R;
 
 public class LoginActivity extends AppCompatActivity {
 

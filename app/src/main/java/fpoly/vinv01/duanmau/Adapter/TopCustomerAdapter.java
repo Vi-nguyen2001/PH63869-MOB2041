@@ -1,4 +1,4 @@
-package fpoly.vinv01.duanmau;
+package fpoly.vinv01.duanmau.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import fpoly.vinv01.duanmau.Model.CustomerTop;
+import fpoly.vinv01.duanmau.R;
 
 public class TopCustomerAdapter extends BaseAdapter {
     private Context context;

@@ -1,4 +1,4 @@
-package fpoly.vinv01.duanmau;
+package fpoly.vinv01.duanmau.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.os.Handler;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import fpoly.vinv01.duanmau.R;
 
 public class MainActivity extends AppCompatActivity {
 

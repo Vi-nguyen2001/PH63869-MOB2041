@@ -1,4 +1,4 @@
-package fpoly.vinv01.duanmau;
+package fpoly.vinv01.duanmau.Model;
 
 public class ProductTop {
     private int rank;

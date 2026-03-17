@@ -1,4 +1,4 @@
-package fpoly.vinv01.duanmau;
+package fpoly.vinv01.duanmau.Activity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import fpoly.vinv01.duanmau.R;
 
 public class thongkedoanhthuActivity extends AppCompatActivity {
 

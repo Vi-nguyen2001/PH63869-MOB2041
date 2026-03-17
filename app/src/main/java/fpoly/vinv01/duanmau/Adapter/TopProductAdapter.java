@@ -1,4 +1,4 @@
-package fpoly.vinv01.duanmau;
+package fpoly.vinv01.duanmau.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+
+import fpoly.vinv01.duanmau.Model.ProductTop;
+import fpoly.vinv01.duanmau.R;
 
 public class TopProductAdapter extends BaseAdapter {
     private Context context;
