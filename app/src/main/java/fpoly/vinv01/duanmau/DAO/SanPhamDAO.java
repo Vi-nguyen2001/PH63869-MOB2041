@@ -44,7 +44,6 @@ public class SanPhamDAO {
                     sp.setTenDanhMuc(cursor.getString(7));
                     list.add(sp);
                     cursor.moveToNext();
-
                 }
             }
             db.setTransactionSuccessful();

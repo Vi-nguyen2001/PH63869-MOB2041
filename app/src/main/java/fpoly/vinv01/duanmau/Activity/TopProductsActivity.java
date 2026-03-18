@@ -61,11 +61,11 @@ public class TopProductsActivity extends AppCompatActivity {
         // Setup ListView with Dummy Data
         productList = new ArrayList<>();
         // Add sample data to test UI
-        productList.add(new ProductTop(1, 123, "Trà Xanh Thái Nguyên Đặc Biệt", 1240, R.drawable.anhsanpham));
-        productList.add(new ProductTop(2, 113, "Cà Phê Arabica Nguyên Chất", 956, R.drawable.anhsanpham));
-        productList.add(new ProductTop(3, 103, "Mật Ong Hoa Nhãn 500ml", 812, R.drawable.anhsanpham));
-        productList.add(new ProductTop(4, 102, "Hạt Điều Rang Muối Loại A", 645, R.drawable.anhsanpham));
-        productList.add(new ProductTop(5, 101, "Gạo Lứt Huyết Rồng 2kg", 432, R.drawable.anhsanpham));
+        productList.add(new ProductTop(1, "123", "Trà Xanh Thái Nguyên Đặc Biệt", 1240, R.drawable.anhsanpham));
+        productList.add(new ProductTop(2, "113", "Cà Phê Arabica Nguyên Chất", 956, R.drawable.anhsanpham));
+        productList.add(new ProductTop(3, "103", "Mật Ong Hoa Nhãn 500ml", 812, R.drawable.anhsanpham));
+        productList.add(new ProductTop(4, "102", "Hạt Điều Rang Muối Loại A", 645, R.drawable.anhsanpham));
+        productList.add(new ProductTop(5, "101", "Gạo Lứt Huyết Rồng 2kg", 432, R.drawable.anhsanpham));
 
         // Use the updated BaseAdapter constructor
         adapter = new TopProductAdapter(this, productList);

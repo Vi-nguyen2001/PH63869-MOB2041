@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivIconHD"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_bg_cat"
+            android:backgroundTint="#E8F5E9"
+            android:padding="10dp"
+            android:src="@drawable/anhhoadon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#27AE60" />
+
+        <TextView
+            android:id="@+id/tvMaHD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="HD001"
+            android:textColor="#27AE60"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/ivIconHD"
+            app:layout_constraintTop_toTopOf="@id/ivIconHD" />
+
+        <TextView
+            android:id="@+id/tvNgayLap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20/10/2023 | 14:30"
+            android:textColor="@color/gray_text"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/tvMaHD"
+            app:layout_constraintTop_toBottomOf="@id/tvMaHD" />
+
+        <ImageView
+            android:id="@+id/btnDeleteHD"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="6dp"
+            android:src="@android:drawable/ic_menu_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#B0BEC5" />
+
+        <TableLayout
+            android:id="@+id/tableInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/ivIconHD">
+
+            <TableRow android:layout_marginBottom="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nhân viên:"
+                    android:textColor="@color/gray_text"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/tvTenNV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="Nguyễn Văn A"
+                    android:textColor="@color/text_title"
+                    android:textSize="13sp" />
+            </TableRow>
+
+            <TableRow android:layout_marginBottom="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khách hàng:"
+                    android:textColor="@color/gray_text"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/tvTenKH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="Trần Thị B"
+                    android:textColor="@color/text_title"
+                    android:textSize="13sp" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng cộng:"
+                    android:textColor="@color/gray_text"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvTongTien"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="500.000 VNĐ"
+                    android:textColor="@color/text_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
