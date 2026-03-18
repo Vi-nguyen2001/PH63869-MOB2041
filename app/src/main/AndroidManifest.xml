@@ -14,7 +14,11 @@
         
         <activity
             android:name=".Activity.MainActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -46,14 +50,15 @@
         <activity android:name=".Activity.SuaSanPhamActivity" />
         <activity android:name=".Activity.QLSanPhamActivity" android:exported="false" />
 
-        <activity android:name=".Activity.QLNhanVienActivity" android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Activity.QLNhanVienActivity" android:exported="false" />
         <activity android:name=".Activity.ThemNhanVienActivity" android:exported="false" />
         <activity android:name=".Activity.SuaNhanVienActivity" android:exported="false" />
+
+        <activity android:name=".Activity.KhachHangActivity" android:exported="false" />
+        <activity android:name=".Activity.ThemKhachHangActivity" android:exported="false" />
+        <activity android:name=".Activity.SuaKhachHangActivity" android:exported="false" />
+        <activity android:name=".Activity.HoaDonActivity" android:exported="false" />
+        <activity android:name=".Activity.ChiTietHoaDonActivity" android:exported="false" />
             
     </application>
 

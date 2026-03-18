@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "JPMart.db";
-    public static final int DB_VERSION = 4; // Tăng version để cập nhật bảng HoaDon
+    public static final int DB_VERSION = 5; // Tăng version để cập nhật bảng KhachHang
 
     public DbHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -44,14 +44,25 @@ public class DbHelper extends SQLiteOpenHelper {
                 "matKhau TEXT NOT NULL)";
         db.execSQL(createTableNhanVien);
 
+        // Tạo bảng Khách hàng
+        String createTableKhachHang = "CREATE TABLE KhachHang (" +
+                "maKH TEXT PRIMARY KEY, " +
+                "hoTen TEXT NOT NULL, " +
+                "dienThoai TEXT, " +
+                "email TEXT, " +
+                "diaChi TEXT)";
+        db.execSQL(createTableKhachHang);
+
         // Tạo bảng Hóa đơn
         String createTableHoaDon = "CREATE TABLE HoaDon (" +
                 "maHD TEXT PRIMARY KEY, " +
                 "ngayLap TEXT NOT NULL, " +
                 "maNV TEXT NOT NULL, " +
+                "maKH TEXT, " +
                 "tenKhachHang TEXT, " +
                 "tongTien INTEGER, " +
-                "FOREIGN KEY (maNV) REFERENCES NhanVien(maNV))";
+                "FOREIGN KEY (maNV) REFERENCES NhanVien(maNV), " +
+                "FOREIGN KEY (maKH) REFERENCES KhachHang(maKH))";
         db.execSQL(createTableHoaDon);
 
         // Tạo bảng Hóa đơn chi tiết
@@ -77,20 +88,19 @@ public class DbHelper extends SQLiteOpenHelper {
                 "('NV001', 'Nguyễn Văn An', 'Hà Nội', 'Quản lý kho', 15000000, '123456'), " +
                 "('NV002', 'Trần Thị Bình', 'TP.HCM', 'Nhân viên bán hàng', 7500000, '123456')");
 
-        // Dữ liệu mẫu Hóa đơn
-        db.execSQL("INSERT INTO HoaDon (maHD, ngayLap, maNV, tenKhachHang, tongTien) VALUES " +
-                "('HD001', '20/10/2023 | 14:30', 'NV001', 'Trần Thị B', 500000), " +
-                "('HD002', '20/10/2023 | 15:45', 'NV002', 'Phạm Văn D', 1200000)");
+        db.execSQL("INSERT INTO KhachHang (maKH, hoTen, dienThoai, email, diaChi) VALUES " +
+                "('KH001', 'Nguyễn Văn A', '0912345678', 'vana@gmail.com', 'Quận 1, TP.HCM'), " +
+                "('KH002', 'Trần Thị B', '0987654321', 'thib@gmail.com', 'Quận 3, TP.HCM')");
 
-        // Dữ liệu mẫu HDCT
-        db.execSQL("INSERT INTO HoaDonChiTiet (maHD, maSP, soLuong, giaLucBan) VALUES " +
-                "('HD001', 3, 2, 28000)");
+        db.execSQL("INSERT INTO HoaDon (maHD, ngayLap, maNV, maKH, tenKhachHang, tongTien) VALUES " +
+                "('HD001', '20/10/2023 | 14:30', 'NV001', 'KH002', 'Trần Thị B', 500000)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS HoaDonChiTiet");
         db.execSQL("DROP TABLE IF EXISTS HoaDon");
+        db.execSQL("DROP TABLE IF EXISTS KhachHang");
         db.execSQL("DROP TABLE IF EXISTS SanPham");
         db.execSQL("DROP TABLE IF EXISTS DanhMuc");
         db.execSQL("DROP TABLE IF EXISTS NhanVien");
