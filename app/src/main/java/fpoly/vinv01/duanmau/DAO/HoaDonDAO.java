@@ -35,9 +35,10 @@ public class HoaDonDAO {
                     hd.setMaHD(cursor.getString(0));
                     hd.setNgayLap(cursor.getString(1));
                     hd.setMaNV(cursor.getString(2));
-                    hd.setTenKhachHang(cursor.getString(3));
-                    hd.setTongTien(cursor.getInt(4));
-                    hd.setTenNV(cursor.getString(5));
+                    hd.setMaKH(cursor.getString(3));
+                    hd.setTenKhachHang(cursor.getString(4));
+                    hd.setTongTien(cursor.getInt(5));
+                    hd.setTenNV(cursor.getString(6));
                     list.add(hd);
                     cursor.moveToNext();
                 }
@@ -137,4 +138,47 @@ public class HoaDonDAO {
         }
         return "HD001";
     }
+    public boolean insertFull(HoaDon hd, List<HoaDonChiTiet> listCT) {
+        db = dbHelper.getWritableDatabase();
+        try {
+            db.beginTransaction();
+
+            // 1. Insert bảng HoaDon
+            ContentValues vHD = new ContentValues();
+            vHD.put("maHD", hd.getMaHD());
+            vHD.put("ngayLap", hd.getNgayLap());
+            vHD.put("maNV", hd.getMaNV());
+            vHD.put("maKH", hd.getMaKH()); // Đã có maKH từ DbHelper version 5
+            vHD.put("tenKhachHang", hd.getTenKhachHang());
+            vHD.put("tongTien", hd.getTongTien());
+
+            long checkHD = db.insert("HoaDon", null, vHD);
+            if (checkHD == -1) return false; // Thất bại thì thoát luôn
+
+            // 2. Insert danh sách bảng HoaDonChiTiet
+            for (HoaDonChiTiet ct : listCT) {
+                ContentValues vCT = new ContentValues();
+                vCT.put("maHD", hd.getMaHD());
+                vCT.put("maSP", ct.getMaSP());
+                vCT.put("soLuong", ct.getSoLuong());
+                vCT.put("giaLucBan", ct.getGiaLucBan());
+
+                long checkCT = db.insert("HoaDonChiTiet", null, vCT);
+                if (checkCT == -1) return false; // Một dòng lỗi là hủy cả đơn hàng
+
+                // 3. (Tùy chọn) Cập nhật trừ số lượng tồn kho ở đây
+                db.execSQL("UPDATE SanPham SET soLuong = soLuong - ? WHERE maSP = ?",
+                        new Object[]{ct.getSoLuong(), ct.getMaSP()});
+            }
+
+            db.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.endTransaction();
+        }
+    }
 }
+

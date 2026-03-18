@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fpoly.vinv01.duanmau.DbHelper;
+import fpoly.vinv01.duanmau.Model.CustomerTop;
 import fpoly.vinv01.duanmau.Model.ProductTop;
 
 public class ThongKeDAO {
@@ -38,6 +39,39 @@ public class ThongKeDAO {
                         cursor.getString(1),
                         cursor.getInt(2),
                         fpoly.vinv01.duanmau.R.drawable.anhsanpham
+                ));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return list;
+    }
+
+
+    public List<CustomerTop> getTopCustomersByDate(String fromDate, String toDate, int limit) {
+        List<CustomerTop> list = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String sql = "SELECT kh.maKH, kh.hoTen, SUM(hd.tongTien) as totalSpent, COUNT(hd.maHD) as orderCount " +
+                "FROM KhachHang kh " +
+                "INNER JOIN HoaDon hd ON kh.maKH = hd.maKH " +
+                "WHERE hd.ngayLap BETWEEN ? AND ? " +
+                "GROUP BY kh.maKH " +
+                "ORDER BY totalSpent DESC " +
+                "LIMIT ?";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{fromDate, toDate, String.valueOf(limit)});
+        int rank = 1;
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                int idInt = Integer.parseInt(cursor.getString(0).substring(2));
+                list.add(new CustomerTop(
+                        rank++,
+                        idInt,
+                        cursor.getString(1), // hoTen
+                        cursor.getDouble(2), // totalSpent
+                        cursor.getInt(3),    // orderCount
+                        fpoly.vinv01.duanmau.R.drawable.anhkhachhang
                 ));
                 cursor.moveToNext();
             }

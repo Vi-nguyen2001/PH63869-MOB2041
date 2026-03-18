@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
+import fpoly.vinv01.duanmau.DAO.ThongKeDAO;
 import fpoly.vinv01.duanmau.Adapter.TopCustomerAdapter;
 import fpoly.vinv01.duanmau.Model.CustomerTop;
 import fpoly.vinv01.duanmau.R;
@@ -81,9 +81,18 @@ public class TopCustomerActivity extends AppCompatActivity {
 
             if (fromDate.isEmpty() || toDate.isEmpty() || quantity.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Đang truy vấn Top " + quantity + " khách hàng...", Toast.LENGTH_SHORT).show();
+                return;
             }
+            int limit = Integer.parseInt(quantity);
+            ThongKeDAO thongKeDAO = new ThongKeDAO(this);
+            List<CustomerTop> topCustomers = thongKeDAO.getTopCustomersByDate(fromDate, toDate, limit);
+            if (topCustomers.isEmpty()){
+                Toast.makeText(this, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+            }
+            customerList.clear();
+            customerList.addAll(topCustomers);
+            adapter.notifyDataSetChanged();
+            tvResultCount.setText("Đã tải " + customerList.size() + " kết quả");
         });
     }
 

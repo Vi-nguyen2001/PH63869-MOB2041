@@ -3,6 +3,7 @@ package fpoly.vinv01.duanmau.Model;
 import java.io.Serializable;
 
 public class HoaDon implements Serializable {
+    private String maKH;
     private String maHD;
     private String ngayLap;
     private String maNV;
@@ -13,12 +14,21 @@ public class HoaDon implements Serializable {
     public HoaDon() {
     }
 
-    public HoaDon(String maHD, String ngayLap, String maNV, String tenKhachHang, int tongTien) {
+    public HoaDon(String maHD, String ngayLap, String maNV,String maKH, String tenKhachHang, int tongTien) {
         this.maHD = maHD;
         this.ngayLap = ngayLap;
         this.maNV = maNV;
+        this.maKH = maKH;
         this.tenKhachHang = tenKhachHang;
         this.tongTien = tongTien;
+    }
+
+    public String getMaKH() {
+        return maKH;
+    }
+
+    public void setMaKH(String maKH) {
+        this.maKH = maKH;
     }
 
     public String getMaHD() { return maHD; }
