@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import fpoly.vinv01.duanmau.DAO.NhanVienDAO;
+import fpoly.vinv01.duanmau.DbHelper;
 import fpoly.vinv01.duanmau.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        DbHelper dbHelper = new DbHelper(this);
+        dbHelper.getWritableDatabase();;
 
         // ánh xạ view
         etUsername = findViewById(R.id.etUsername);
@@ -49,7 +53,12 @@ public class LoginActivity extends AppCompatActivity {
             cbRememberMe.setChecked(true);
 
             // tự động vào MainActivity
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent ;
+            if (savedUser.equals("admin")) {
+                intent = new Intent(LoginActivity.this, trangchuquanly.class);
+            }else {
+                intent = new Intent(LoginActivity.this, trangchunhanvien.class);
+            }
             startActivity(intent);
             finish();
         }
@@ -59,45 +68,33 @@ public class LoginActivity extends AppCompatActivity {
 
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
-
             if (username.isEmpty() || password.isEmpty()) {
-
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-
             }
-
-            else if (username.equals("admin") && password.equals("123")) {
-
+            NhanVienDAO dao = new NhanVienDAO(this);
+            if (dao.checkLogin(username, password)) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-
                 if (cbRememberMe.isChecked()) {
-
                     editor.putString("username", username);
                     editor.putString("password", password);
                     editor.putBoolean("remember", true);
-
                 } else {
-
                     editor.clear();
-
                 }
-
+                editor.putString("username", username);
                 editor.apply();
-
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(LoginActivity.this, trangchuquanly.class);
+                Intent intent;
+                if (username.equals("admin")) {
+                    intent = new Intent(LoginActivity.this, trangchuquanly.class);
+                }else {
+                    intent = new Intent(LoginActivity.this, trangchunhanvien.class);
+                }
                 startActivity(intent);
                 finish();
-
+            } else {
+                Toast.makeText(this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
             }
-
-            else {
-
-                Toast.makeText(this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-
-            }
-
         });
     }
 }

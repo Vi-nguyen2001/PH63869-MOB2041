@@ -14,7 +14,11 @@
         
         <activity
             android:name=".Activity.MainActivity"
-            android:exported="false">
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 
@@ -57,11 +61,11 @@
         <activity android:name=".Activity.HoaDonActivity" android:exported="false" />
         <activity android:name=".Activity.ChiTietHoaDonActivity" android:exported="false" />
         <activity android:name=".Activity.GioHangActivity" android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
+        <activity
+            android:name=".Activity.DoiMatKhauActivity"
+            android:screenOrientation="portrait" />
             
     </application>
 

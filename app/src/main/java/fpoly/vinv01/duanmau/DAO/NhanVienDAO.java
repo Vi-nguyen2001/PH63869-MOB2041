@@ -118,4 +118,30 @@ public class NhanVienDAO {
         }
         return "NV001";
     }
+
+    public int updatePassword(String maNV, String newPass) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("matKhau", newPass); // Cột 'matKhau' phải khớp với tên cột trong DbHelper
+        // Cập nhật mật khẩu cho nhân viên có mã tương ứng
+        return db.update("NhanVien", values, "maNV = ?", new String[]{maNV});
+    }
+    public boolean checkOldPassword(String maNV, String oldPass) {
+        db = dbHelper.getReadableDatabase();
+        String sql = "SELECT * FROM NhanVien WHERE maNV = ? AND matKhau = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{maNV, oldPass});
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
+    }
+
+    public boolean checkLogin(String username, String password) {
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM NhanVien WHERE maNV = ? AND matKhau = ?", new String[]{username, password});
+        int count = cursor.getCount();
+        cursor.close();
+        return count >0;
+
+    }
+
 }

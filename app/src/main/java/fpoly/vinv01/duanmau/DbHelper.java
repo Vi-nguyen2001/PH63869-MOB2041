@@ -1,19 +1,15 @@
 package fpoly.vinv01.duanmau;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
-
 public class DbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "JPMart.db";
-    public static final int DB_VERSION = 5; // Tăng version để cập nhật bảng KhachHang
-
+    public static final int DB_VERSION = 6; // Tăng version để cập nhật bảng KhachHang
     public DbHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Tạo bảng Danh mục
@@ -21,7 +17,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 "maDanhMuc INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "tenDanhMuc TEXT NOT NULL)";
         db.execSQL(createTableDanhMuc);
-
         // Tạo bảng Sản phẩm
         String createTableSanPham = "CREATE TABLE SanPham (" +
                 "maSP INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -33,7 +28,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 "maDanhMuc INTEGER, " +
                 "FOREIGN KEY (maDanhMuc) REFERENCES DanhMuc(maDanhMuc))";
         db.execSQL(createTableSanPham);
-
         // Tạo bảng Nhân viên
         String createTableNhanVien = "CREATE TABLE NhanVien (" +
                 "maNV TEXT PRIMARY KEY, " +
@@ -43,7 +37,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 "luong INTEGER, " +
                 "matKhau TEXT NOT NULL)";
         db.execSQL(createTableNhanVien);
-
         // Tạo bảng Khách hàng
         String createTableKhachHang = "CREATE TABLE KhachHang (" +
                 "maKH TEXT PRIMARY KEY, " +
@@ -52,7 +45,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 "email TEXT, " +
                 "diaChi TEXT)";
         db.execSQL(createTableKhachHang);
-
         // Tạo bảng Hóa đơn
         String createTableHoaDon = "CREATE TABLE HoaDon (" +
                 "maHD TEXT PRIMARY KEY, " +
@@ -64,7 +56,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (maNV) REFERENCES NhanVien(maNV), " +
                 "FOREIGN KEY (maKH) REFERENCES KhachHang(maKH))";
         db.execSQL(createTableHoaDon);
-
         // Tạo bảng Hóa đơn chi tiết
         String createTableHoaDonChiTiet = "CREATE TABLE HoaDonChiTiet (" +
                 "maHDCT INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -75,10 +66,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (maHD) REFERENCES HoaDon(maHD), " +
                 "FOREIGN KEY (maSP) REFERENCES SanPham(maSP))";
         db.execSQL(createTableHoaDonChiTiet);
-
         // Chèn dữ liệu mẫu
         db.execSQL("INSERT INTO DanhMuc (tenDanhMuc) VALUES ('Rau củ quả'), ('Bánh kẹo'), ('Đồ uống')");
-        
+
         db.execSQL("INSERT INTO SanPham (tenSP, giaBan, donViTinh, soLuong, ngayNhap, maDanhMuc) VALUES " +
                 "('Táo Envy', 120000, 'Kg', 50, '01/10/2023', 1), " +
                 "('Bánh KitKat', 15000, 'Gói', 100, '02/10/2023', 2), " +
@@ -94,6 +84,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO HoaDon (maHD, ngayLap, maNV, maKH, tenKhachHang, tongTien) VALUES " +
                 "('HD001', '20/10/2023 | 14:30', 'NV001', 'KH002', 'Trần Thị B', 500000)");
+        // Tài khoản quản lý
+
+        db.execSQL("INSERT INTO NhanVien VALUES ('admin', 'Nguyễn Văn An', 'Hà Nội', 'Quản lý', 20000000, 'admin123')");
+        // Tài khoản nhân viên
+
     }
 
     @Override
