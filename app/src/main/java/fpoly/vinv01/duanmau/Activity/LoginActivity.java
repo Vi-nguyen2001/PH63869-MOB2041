@@ -74,14 +74,14 @@ public class LoginActivity extends AppCompatActivity {
             NhanVienDAO dao = new NhanVienDAO(this);
             if (dao.checkLogin(username, password)) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("username", username);
                 if (cbRememberMe.isChecked()) {
-                    editor.putString("username", username);
                     editor.putString("password", password);
                     editor.putBoolean("remember", true);
                 } else {
-                    editor.clear();
+                    editor.remove("password");
+                    editor.putBoolean("remember", false);
                 }
-                editor.putString("username", username);
                 editor.apply();
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 Intent intent;

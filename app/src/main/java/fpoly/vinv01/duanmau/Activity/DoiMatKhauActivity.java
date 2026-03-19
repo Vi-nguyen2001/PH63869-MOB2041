@@ -1,5 +1,7 @@
 package fpoly.vinv01.duanmau.Activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -20,7 +22,8 @@ public class DoiMatKhauActivity extends AppCompatActivity {
     private TextInputEditText etCurrent, etNew, etConfirm;
     private MaterialButton btnSave, btnCancel;
     private NhanVienDAO dao;
-    private String maNV = "NV001";
+    private String maNV;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,9 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btn_cancel);
 
         dao = new NhanVienDAO(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", MODE_PRIVATE);
+        maNV = sharedPreferences.getString("username", "");
+
 
         // Set listeners
         btnSave.setOnClickListener(v -> {
@@ -66,10 +72,20 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                 Toast.makeText(this, "Mật khẩu mới không trùng khớp", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (newPass.length() < 6) {
+                Toast.makeText(this, "Mật khẩu mới phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             int result = dao.updatePassword(maNV, newPass);
             if (result > 0) {
                 Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
+                Intent intent = new Intent(DoiMatKhauActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             } else {
                 Toast.makeText(this, "Đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();
@@ -77,5 +93,10 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         });
 
         btnCancel.setOnClickListener(v -> finish());
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed(); // Hoặc finish();
+        return true;
     }
 }

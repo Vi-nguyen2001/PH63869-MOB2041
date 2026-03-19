@@ -69,6 +69,13 @@ public class QLNhanVienActivity extends AppCompatActivity implements NhanVienAda
             @Override
             public void afterTextChanged(Editable s) {}
         });
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(QLNhanVienActivity.this, trangchuquanly.class);
+            startActivity(intent);
+            finish(); // Kết thúc màn hình hiện tại
+        });
+
+
     }
 
     private void loadData() {
@@ -118,4 +125,6 @@ public class QLNhanVienActivity extends AppCompatActivity implements NhanVienAda
                 .setNegativeButton("Hủy", null)
                 .show();
     }
+
+
 }

@@ -1,5 +1,6 @@
 package fpoly.vinv01.duanmau.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -70,6 +71,9 @@ public class trangchuquanly extends AppCompatActivity {
 
         cardEmployee.setOnClickListener(v -> {
             // Thêm logic chuyển màn hình hoặc xử lý tại đây
+            Intent intent = new Intent(trangchuquanly.this, QLNhanVienActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         cardInvoice.setOnClickListener(v -> {
@@ -83,6 +87,10 @@ public class trangchuquanly extends AppCompatActivity {
         // Riêng mục Đăng xuất hiển thị Toast thông báo
         cardLogout.setOnClickListener(v -> {
             Toast.makeText(trangchuquanly.this, "Bạn vừa nhấn Đăng xuất", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(trangchuquanly.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
     }
 }
