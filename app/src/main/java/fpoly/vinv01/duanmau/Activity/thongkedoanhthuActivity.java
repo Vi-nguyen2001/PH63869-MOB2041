@@ -2,6 +2,7 @@ package fpoly.vinv01.duanmau.Activity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,6 +24,8 @@ public class thongkedoanhthuActivity extends AppCompatActivity {
     private MaterialButton btnQuery;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
+    private TextView tvTotalRevenue;
+    private fpoly.vinv01.duanmau.DAO.ThongKeDAO thongKeDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,9 @@ public class thongkedoanhthuActivity extends AppCompatActivity {
         }
 
         // Handle Back button
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
 
         // Initialize Views
         etFromDate = findViewById(R.id.etFromDate);
@@ -49,6 +55,8 @@ public class thongkedoanhthuActivity extends AppCompatActivity {
         // Set Click Listeners for Date Selection
         etFromDate.setOnClickListener(v -> showDatePicker(etFromDate));
         etToDate.setOnClickListener(v -> showDatePicker(etToDate));
+        tvTotalRevenue = findViewById(R.id.tvTotalRevenue);
+        thongKeDAO = new fpoly.vinv01.duanmau.DAO.ThongKeDAO(this);
 
         // Query Button Listener
         btnQuery.setOnClickListener(v -> {
@@ -59,6 +67,10 @@ public class thongkedoanhthuActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng chọn đầy đủ khoảng ngày", Toast.LENGTH_SHORT).show();
             } else {
                 // Logic truy vấn từ Database sẽ được thêm ở đây
+                int doanhThu = thongKeDAO.getDoanhThu(fromDate, toDate);
+                //định dạng tiền
+                DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+                tvTotalRevenue.setText(decimalFormat.format(doanhThu) + " VNĐ");
                 Toast.makeText(this, "Đang truy vấn dữ liệu từ " + fromDate + " đến " + toDate, Toast.LENGTH_SHORT).show();
             }
         });

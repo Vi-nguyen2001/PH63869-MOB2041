@@ -45,6 +45,8 @@ public class trangchuquanly extends AppCompatActivity {
     private void setupClickListeners() {
         // Sự kiện cho phần Thống kê
         cardRevenue.setOnClickListener(v -> {
+            Intent intent = new Intent(trangchuquanly.this, thongkedoanhthuActivity.class);
+            startActivity(intent);
             // Thêm logic chuyển màn hình hoặc xử lý tại đây
         });
 

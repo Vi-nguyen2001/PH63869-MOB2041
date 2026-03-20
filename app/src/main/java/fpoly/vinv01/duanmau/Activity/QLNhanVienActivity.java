@@ -74,8 +74,6 @@ public class QLNhanVienActivity extends AppCompatActivity implements NhanVienAda
             startActivity(intent);
             finish(); // Kết thúc màn hình hiện tại
         });
-
-
     }
 
     private void loadData() {

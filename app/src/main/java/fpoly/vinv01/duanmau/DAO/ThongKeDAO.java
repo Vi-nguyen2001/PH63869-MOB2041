@@ -79,4 +79,22 @@ public class ThongKeDAO {
         cursor.close();
         return list;
     }
+
+    public int getDoanhThu(String tuNgay, String denNgay) {
+        // SQLite sử dụng định dạng yyyy-MM-dd để so sánh ngày chuẩn nhất
+
+        String sql = "SELECT SUM(tongTien) FROM HoaDon WHERE substr(ngayLap,1,10) BETWEEN ? AND ?";
+        List<Integer> list = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, new String[]{tuNgay, denNgay});
+
+        while (cursor.moveToNext()) {
+            try {
+                list.add(Integer.parseInt(cursor.getString(0)));
+            } catch (Exception e) {
+                list.add(0);
+            }
+        }
+        return list.get(0);
+    }
 }
