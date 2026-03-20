@@ -29,9 +29,9 @@ public class SanPhamDAO {
             db.beginTransaction();
             String sql = "SELECT sp.*, dm.tenDanhMuc " +
                     "FROM SanPham sp " +
-                    "INNER JOIN DanhMuc dm ON sp.maDanhMuc = dm.maDanhMuc";
+                    "LEFT JOIN DanhMuc dm ON sp.maDanhMuc = dm.maDanhMuc";
             cursor = db.rawQuery(sql, null);
-            if (!cursor.moveToFirst()){
+            if (cursor != null && cursor.moveToFirst()){
                 while (!cursor.isAfterLast()){
                     SanPham sp = new SanPham();
                     sp.setMaSP(cursor.getInt(0));

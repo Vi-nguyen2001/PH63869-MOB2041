@@ -75,6 +75,10 @@ public class SuaSanPhamActivity extends ThemSanPhamActivity {
 
     @Override
     protected void saveProduct() {
+        if(danhMucList==null || danhMucList.isEmpty()){// Kiểm tra danh mục có sản phẩm hay không)
+            Toast.makeText(this,"Bạn cần thêm danh mục trước khi Sửa sản phẩm",Toast.LENGTH_SHORT).show();
+            return;
+        }
         String ten = etTenSP.getText().toString().trim();
         String gia = etGiaBan.getText().toString().trim();
         String dvt = etDonViTinh.getText().toString().trim();
@@ -86,8 +90,11 @@ public class SuaSanPhamActivity extends ThemSanPhamActivity {
             return;
         }
 
-        int maDM = danhMucList.get(spDanhMuc.getSelectedItemPosition()).getMaDanhMuc();
+        //Lấy vị trí và mã danh mục mới từ Spinner
+        int pos = spDanhMuc.getSelectedItemPosition();
+        int maDM = danhMucList.get(pos).getMaDanhMuc();
 
+        //Cập nhật thông tin vào đối tượng hiện tại (currentProduct)
         currentProduct.setTenSP(ten);
         currentProduct.setGiaBan(Integer.parseInt(gia));
         currentProduct.setDonViTinh(dvt);
@@ -99,7 +106,10 @@ public class SuaSanPhamActivity extends ThemSanPhamActivity {
             Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK);
             finish();
+        }else{
+            Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
         }
+
     }
 
 }

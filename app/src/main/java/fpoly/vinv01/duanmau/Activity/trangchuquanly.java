@@ -69,7 +69,8 @@ public class trangchuquanly extends AppCompatActivity {
         });
 
         cardProduct.setOnClickListener(v -> {
-            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+            Intent intent = new Intent(trangchuquanly.this, QLSanPhamActivity.class);
+            startActivity(intent);
         });
 
         cardCustomer.setOnClickListener(v -> {

@@ -39,7 +39,7 @@ public class QLSanPhamActivity extends AppCompatActivity implements SanPhamAdapt
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         lvSanPham = findViewById(R.id.lvSanPham);
         fabAdd = findViewById(R.id.fabAddProduct);

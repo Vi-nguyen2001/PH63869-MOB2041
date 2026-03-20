@@ -1,6 +1,7 @@
 package fpoly.vinv01.duanmau.Activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -91,6 +92,11 @@ public class ThemSanPhamActivity extends AppCompatActivity {
     }
 
     protected void saveProduct() {
+        if (danhMucList==null){// Kiểm tra danh mục có sản phẩm hay không
+            Toast.makeText(this,"Bạn cần thêm danh mục trước khi thêm sản phẩm",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,QLDanhMucActivity.class));
+            return;
+        }
         String ten = etTenSP.getText().toString().trim();
         String gia = etGiaBan.getText().toString().trim();
         String dvt = etDonViTinh.getText().toString().trim();
@@ -101,8 +107,11 @@ public class ThemSanPhamActivity extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
+        int pos = spDanhMuc.getSelectedItemPosition();
+        int maDM = danhMucList.get(pos).getMaDanhMuc();
 
-        int maDM = danhMucList.get(spDanhMuc.getSelectedItemPosition()).getMaDanhMuc();
+
+
 
         SanPham sp = new SanPham(0, ten, Integer.parseInt(gia), dvt, Integer.parseInt(sl), ngay, maDM);
         if (dao.insert(sp) > 0) {
