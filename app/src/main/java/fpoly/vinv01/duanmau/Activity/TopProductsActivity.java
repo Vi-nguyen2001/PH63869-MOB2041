@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import fpoly.vinv01.duanmau.Adapter.TopProductAdapter;
+import fpoly.vinv01.duanmau.DAO.ThongKeDAO;
 import fpoly.vinv01.duanmau.Model.ProductTop;
 import fpoly.vinv01.duanmau.R;
 
@@ -30,6 +31,8 @@ public class TopProductsActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat;
     private List<ProductTop> productList;
     private TopProductAdapter adapter;
+    private ThongKeDAO thongKeDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ public class TopProductsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        thongKeDAO = new ThongKeDAO(this);
+
 
         // Initialize Views
         etFromDate = findViewById(R.id.etFromDate);
@@ -73,14 +78,38 @@ public class TopProductsActivity extends AppCompatActivity {
 
         // Query Button
         btnQuery.setOnClickListener(v -> {
-            String fromDate = etFromDate.getText().toString();
-            String toDate = etToDate.getText().toString();
-            String quantity = etQuantity.getText().toString();
+            String fromDate = etFromDate.getText().toString().trim();
+            String toDate = etToDate.getText().toString().trim();
+            String quantityStr = etQuantity.getText().toString().trim();
 
-            if (fromDate.isEmpty() || toDate.isEmpty() || quantity.isEmpty()) {
+            // 1. Kiểm tra nhập liệu
+            if (fromDate.isEmpty() || toDate.isEmpty() || quantityStr.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Đang truy vấn Top " + quantity + " sản phẩm từ " + fromDate + " đến " + toDate, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+
+                int limit = Integer.parseInt(quantityStr);
+
+                // 2. Gọi hàm lấy dữ liệu thật từ DAO
+                // Lưu ý: Nếu hàm getTopProduct nằm trong file khác, Vĩ gọi đúng file đó
+                List<ProductTop> resultList = thongKeDAO.getTopProduct(fromDate, toDate, limit);
+
+                // 3. Kiểm tra kết quả và cập nhật giao diện
+                if (resultList != null && !resultList.isEmpty()) {
+                    productList.clear(); // Xóa dữ liệu mẫu cũ
+                    productList.addAll(resultList); // Thêm dữ liệu thật vào list
+                    adapter.notifyDataSetChanged(); // Báo cho ListView vẽ lại giao diện
+
+                    Toast.makeText(this, "Đã cập nhật danh sách Top sản phẩm", Toast.LENGTH_SHORT).show();
+                } else {
+                    productList.clear();
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(this, "Không tìm thấy dữ liệu trong khoảng này", Toast.LENGTH_SHORT).show();
+                }
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Số lượng nhập vào không hợp lệ", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -97,5 +126,11 @@ public class TopProductsActivity extends AppCompatActivity {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private String convertDate(String date) {
+        String[] s = date.split("/");
+        // Chuyển từ dd/MM/yyyy sang yyyy-MM-dd
+        return s[2] + "-" + s[1] + "-" + s[0];
     }
 }

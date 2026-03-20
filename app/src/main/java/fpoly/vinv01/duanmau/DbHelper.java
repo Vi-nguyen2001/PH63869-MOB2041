@@ -84,6 +84,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO HoaDon (maHD, ngayLap, maNV, maKH, tenKhachHang, tongTien) VALUES " +
                 "('HD001', '20/10/2023 | 14:30', 'NV001', 'KH002', 'Trần Thị B', 500000)");
+        db.execSQL("INSERT OR IGNORE INTO HoaDon (maHD, ngayLap, maNV, maKH, tenKhachHang, tongTien) " +
+                "VALUES ('HD001', '20/10/2023 | 14:30', 'NV001', 'KH002', 'Trần Thị B', 500000)");
+
+        db.execSQL("INSERT OR IGNORE INTO HoaDonChiTiet (maHD, maSP, soLuong, giaLucBan) VALUES ('HD001', 1, 10, 120000)");
+        db.execSQL("INSERT OR IGNORE INTO HoaDonChiTiet (maHD, maSP, soLuong, giaLucBan) VALUES ('HD001', 2, 5, 15000)");
         // Tài khoản quản lý
         db.execSQL("INSERT OR IGNORE INTO NhanVien VALUES ('admin', 'Quản lý JPMart', 'Hà Nội', 'Quản lý', 20000000, 'admin123')");
         db.execSQL("INSERT OR IGNORE INTO NhanVien VALUES ('NV001', 'Nguyễn Văn An', 'Hà Nội', 'Nhân viên', 7000000, '123456')");
