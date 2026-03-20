@@ -97,4 +97,23 @@ public class DanhMucDAO {
         }
         return kq;
     }
+
+
+    public boolean isCategoryUsed(int maDanhMuc) { // hàm kiểm tra danh mục có sản phẩm hay không
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM SanPham WHERE maDanhMuc = ?",
+                new String[]{String.valueOf(maDanhMuc)});
+        boolean used = cursor.getCount() > 0;
+        cursor.close();
+        return used;
+    }
+
+    public boolean checkTenDanhMuc(String tenDM) {//kiểm tra có trùng tên hay không
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM DanhMuc WHERE tenDanhMuc = ? COLLATE NOCASE",
+                new String[]{tenDM});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
 }

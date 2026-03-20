@@ -45,7 +45,9 @@ public class TopProductsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
         thongKeDAO = new ThongKeDAO(this);
 
 

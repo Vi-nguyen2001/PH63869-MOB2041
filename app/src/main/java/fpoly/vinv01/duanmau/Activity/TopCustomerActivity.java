@@ -44,7 +44,9 @@ public class TopCustomerActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
 
         // Initialize Views
         etFromDate = findViewById(R.id.etFromDate);

@@ -18,7 +18,7 @@ public class ThongKeDAO {
         dbHelper = new DbHelper(context);
     }
 
-    public List<ProductTop> getTopProduct(String tuNgay, String denNgay, int limit) {
+    public List<ProductTop> getTopProduct(String tuNgay, String denNgay, int limit) {//top sản phẩm
         List<ProductTop> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -60,7 +60,7 @@ public class ThongKeDAO {
     }
 
 
-    public List<CustomerTop> getTopCustomersByDate(String fromDate, String toDate, int limit) {
+    public List<CustomerTop> getTopCustomersByDate(String fromDate, String toDate, int limit) {//top khách hàng
         List<CustomerTop> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -93,8 +93,6 @@ public class ThongKeDAO {
     }
 
     public int getDoanhThu(String tuNgay, String denNgay) {
-        // SQLite sử dụng định dạng yyyy-MM-dd để so sánh ngày chuẩn nhất
-
         String sql = "SELECT SUM(tongTien) FROM HoaDon WHERE substr(ngayLap,1,10) BETWEEN ? AND ?";
         List<Integer> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();

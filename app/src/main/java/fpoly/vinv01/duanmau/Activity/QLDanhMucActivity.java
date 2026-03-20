@@ -34,15 +34,17 @@ public class QLDanhMucActivity extends AppCompatActivity implements DanhMucAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danh_muc);
 
-        // Initialize Toolbar
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
 
-        // Initialize DAO and Views
+
         dao = new DanhMucDAO(this);
         lvDanhMuc = findViewById(R.id.lvDanhMuc);
         fabAdd = findViewById(R.id.fabAdd);
@@ -100,21 +102,29 @@ public class QLDanhMucActivity extends AppCompatActivity implements DanhMucAdapt
                 return;
             }
 
-            if (danhMuc == null) {
-                // Logic THÊM MỚI
-                DanhMuc newDM = new DanhMuc(0, ten);
-                if (dao.insert(newDM) > 0) {
-                    Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    loadData(); // Load lại dữ liệu từ SQLite
-                    dialog.dismiss();
+            if (danhMuc==null){
+                if (dao.checkTenDanhMuc(ten)) {
+                    Toast.makeText(this, "Tên danh mục đã tồn tại", Toast.LENGTH_SHORT).show();
+                    return;
+
                 }
-            } else {
-                // Logic CẬP NHẬT
-                danhMuc.setTenDanhMuc(ten);
-                if (dao.update(danhMuc) > 0) {
-                    Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                    loadData(); // Load lại dữ liệu từ SQLite
+                DanhMuc dm = new DanhMuc(0,ten);
+                if (dao.insert(dm) > 0){
+                    Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+                    loadData();
+                }
+            }else {
+                if (!ten.equals(danhMuc.getTenDanhMuc())&& dao.checkTenDanhMuc(ten)){
+                    Toast.makeText(this, "Tên danh mục đã tồn tại", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                danhMuc.setTenDanhMuc(ten);
+                if (dao.update(danhMuc) > 0){
+                    Toast.makeText(this, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    loadData();
                 }
             }
         });
@@ -130,6 +140,11 @@ public class QLDanhMucActivity extends AppCompatActivity implements DanhMucAdapt
 
     @Override
     public void onDelete(DanhMuc danhMuc) {
+        // Kiểm tra danh mục có sản phẩm hay không
+        if (dao.isCategoryUsed(danhMuc.getMaDanhMuc())) {
+            Toast.makeText(this, "Danh mục này đang được sử dụng. Không thể xóa", Toast.LENGTH_SHORT).show();
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Xác nhận xóa");
         builder.setMessage("Bạn có chắc chắn muốn xóa danh mục '" + danhMuc.getTenDanhMuc() + "'?");
