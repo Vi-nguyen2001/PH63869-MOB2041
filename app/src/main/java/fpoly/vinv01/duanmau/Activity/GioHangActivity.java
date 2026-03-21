@@ -81,7 +81,11 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
             listCT.add(ct);
         }
 
-        HoaDon hd = new HoaDon(maHD, ngay, "NV001", "KH001","Nguyễn Văn A", tongTien);
+        // Cập nhật: Lấy maNV từ SharedPreferences (người đang đăng nhập)
+        android.content.SharedPreferences pref = getSharedPreferences("LOGIN", MODE_PRIVATE);
+        String maNV = pref.getString("username", "NV001");
+
+        HoaDon hd = new HoaDon(maHD, ngay, maNV, "KH001","Khách vãng lai", tongTien);
 
 
         if (hoaDonDAO.insertFull(hd, listCT)) {
@@ -89,7 +93,8 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
             CartManager.listGioHang.clear(); // Xóa giỏ hàng
             finish(); // Quay về
         } else {
-            Toast.makeText(this, "Lỗi thanh toán!", Toast.LENGTH_SHORT).show();
+            // Cập nhật: Báo lỗi cụ thể hơn (có thể do lỗi tồn kho hoặc DB)
+            Toast.makeText(this, "Lỗi thanh toán! Vui lòng kiểm tra lại số lượng tồn kho.", Toast.LENGTH_SHORT).show();
         }
     }
 }

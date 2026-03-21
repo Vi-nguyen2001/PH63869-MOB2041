@@ -125,7 +125,8 @@ public class HoaDonDAO {
 
     public String getNewMaHD() {
         db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT maHD FROM HoaDon ORDER BY maHD DESC LIMIT 1", null);
+        // Cập nhật: Sắp xếp theo giá trị số để tránh lỗi khi mã hóa đơn vượt mốc 999
+        Cursor cursor = db.rawQuery("SELECT maHD FROM HoaDon ORDER BY CAST(SUBSTR(maHD, 3) AS INTEGER) DESC LIMIT 1", null);
         if (cursor != null && cursor.moveToFirst()) {
             String lastMa = cursor.getString(0);
             cursor.close();
@@ -157,6 +158,17 @@ public class HoaDonDAO {
 
             // 2. Insert danh sách bảng HoaDonChiTiet
             for (HoaDonChiTiet ct : listCT) {
+                // Cập nhật: Kiểm tra số lượng tồn kho trước khi thanh toán
+                Cursor cSP = db.rawQuery("SELECT soLuong FROM SanPham WHERE maSP = ?", new String[]{String.valueOf(ct.getMaSP())});
+                int tonKho = 0;
+                if (cSP != null && cSP.moveToFirst()) {
+                    tonKho = cSP.getInt(0);
+                    cSP.close();
+                }
+                if (tonKho < ct.getSoLuong()) {
+                    return false; // Trả về false nếu không đủ hàng trong kho
+                }
+
                 ContentValues vCT = new ContentValues();
                 vCT.put("maHD", hd.getMaHD());
                 vCT.put("maSP", ct.getMaSP());

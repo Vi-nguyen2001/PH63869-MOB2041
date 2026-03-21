@@ -98,9 +98,8 @@ public class SanPhamDAO {
             e.printStackTrace();
         } finally {
             db.endTransaction();
-            return kq;
         }
-
+        return kq;
     }
 
     public int delete(int maSP) {

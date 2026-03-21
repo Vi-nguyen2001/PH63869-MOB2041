@@ -23,7 +23,7 @@ import fpoly.vinv01.duanmau.DAO.KhachHangDAO;
 import fpoly.vinv01.duanmau.Model.KhachHang;
 import fpoly.vinv01.duanmau.R;
 
-public class KhachHangActivity extends AppCompatActivity implements KhachHangAdapter.KhachHangItemListener {
+public class QLKhachHangActivity extends AppCompatActivity implements KhachHangAdapter.KhachHangItemListener {
 
     private ListView lvKhachHang;
     private FloatingActionButton fabAdd;
@@ -43,7 +43,7 @@ public class KhachHangActivity extends AppCompatActivity implements KhachHangAda
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         lvKhachHang = findViewById(R.id.lvKhachHang);
         fabAdd = findViewById(R.id.fabAddKhachHang);
@@ -53,7 +53,7 @@ public class KhachHangActivity extends AppCompatActivity implements KhachHangAda
         loadData();
 
         fabAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(KhachHangActivity.this, ThemKhachHangActivity.class);
+            Intent intent = new Intent(QLKhachHangActivity.this, ThemKhachHangActivity.class);
             startActivityForResult(intent, REQUEST_CODE_KH);
         });
 
@@ -106,6 +106,15 @@ public class KhachHangActivity extends AppCompatActivity implements KhachHangAda
 
     @Override
     public void onDelete(KhachHang kh) {
+        if (dao.CheckKHExists(kh.getMaKH())) {//kiểm tra khách hàng có trong hóa đơn không trước khi xóa
+            new AlertDialog.Builder(this)
+                    .setTitle("Không thể xóa")
+                    .setMessage("Khách hàng '" + kh.getHoTen() + "' đã có lịch sử hóa đơn. Bạn không thể xóa khách hàng này để đảm bảo dữ liệu kế toán.")
+                    .setPositiveButton("Đã hiểu", null)
+                    .show();
+            return;
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa khách hàng '" + kh.getHoTen() + "'?")

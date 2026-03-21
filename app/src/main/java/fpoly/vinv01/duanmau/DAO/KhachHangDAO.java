@@ -107,17 +107,46 @@ public class KhachHangDAO {
 
     public String getNewMaKH() {
         db = dbHelper.getReadableDatabase();
+        // Lấy mã khách hàng lớn nhất hiện có
         Cursor cursor = db.rawQuery("SELECT maKH FROM KhachHang ORDER BY maKH DESC LIMIT 1", null);
+
         if (cursor != null && cursor.moveToFirst()) {
             String lastMa = cursor.getString(0);
             cursor.close();
+
             try {
-                int lastNum = Integer.parseInt(lastMa.substring(2));
-                return String.format("KH%03d", lastNum + 1);
+                // Kiểm tra nếu chuỗi bắt đầu bằng "KH" và có độ dài đủ để cắt
+                if (lastMa != null && lastMa.startsWith("KH") && lastMa.length() > 2) {
+                    // Tách phần số sau chữ "KH"
+                    String sNumber = lastMa.substring(2);
+                    int lastNum = Integer.parseInt(sNumber);
+                    // Tăng số lên 1 và định dạng lại thành KHxxx (ví dụ: KH002)
+                    return String.format("KH%03d", lastNum + 1);
+                }
             } catch (Exception e) {
+                e.printStackTrace();
+                // Nếu có lỗi định dạng (ví dụ mã là "KHabc"), trả về mã dự phòng an toàn
                 return "KH001";
             }
         }
+
+        // Nếu bảng trống hoặc cursor null, trả về mã mặc định đầu tiên
         return "KH001";
+    }
+
+    public boolean checkPhoneExists(String phone) {//kiểm tra có trùng số điện thoại
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM KhachHang WHERE dienThoai = ?", new String[]{phone});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
+    }
+
+    public boolean CheckKHExists(String maKH) {//kiểm tra khách hàng óc trong hóa đơn chưa
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM HoaDon WHERE maKH = ?", new String[]{maKH});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
     }
 }

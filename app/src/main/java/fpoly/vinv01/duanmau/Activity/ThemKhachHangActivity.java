@@ -65,6 +65,10 @@ public class ThemKhachHangActivity extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng nhập họ tên và số điện thoại", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (dao.checkPhoneExists(dt)) {
+            Toast.makeText(this, "Số điện thoại đã tồn tại", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         KhachHang kh = new KhachHang(ma, ten, dt, email, dc);
         if (dao.insert(kh) != -1) {

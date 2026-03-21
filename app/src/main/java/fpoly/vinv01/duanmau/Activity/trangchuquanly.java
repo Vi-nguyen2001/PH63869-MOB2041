@@ -1,6 +1,7 @@
 package fpoly.vinv01.duanmau.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -74,11 +75,11 @@ public class trangchuquanly extends AppCompatActivity {
         });
 
         cardCustomer.setOnClickListener(v -> {
-            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+            Intent intent = new Intent(trangchuquanly.this, QLKhachHangActivity.class);
+            startActivity(intent);
         });
 
         cardEmployee.setOnClickListener(v -> {
-            // Thêm logic chuyển màn hình hoặc xử lý tại đây
             Intent intent = new Intent(trangchuquanly.this, QLNhanVienActivity.class);
             startActivity(intent);
             finish();
@@ -92,9 +93,19 @@ public class trangchuquanly extends AppCompatActivity {
             // Thêm logic chuyển màn hình hoặc xử lý tại đây
         });
 
-        // Riêng mục Đăng xuất hiển thị Toast thông báo
         cardLogout.setOnClickListener(v -> {
-            Toast.makeText(trangchuquanly.this, "Bạn vừa nhấn Đăng xuất", Toast.LENGTH_SHORT).show();
+            // 1. Mở SharedPreferences với đúng tên "LOGIN" mà Vĩ đã đặt bên LoginActivity
+            SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            // 2. Chỉnh trạng thái remember thành false để nó không tự động login nữa
+            editor.putBoolean("remember", false);
+            // Nếu muốn xóa sạch cả tên đăng nhập và mật khẩu thì dùng: editor.clear();
+            editor.apply();
+
+            Toast.makeText(trangchuquanly.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+
+            // 3. Chuyển về Login và xóa Stack
             Intent intent = new Intent(trangchuquanly.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
