@@ -46,9 +46,9 @@ public class ChiTietHoaDonActivity extends AppCompatActivity {
         String ngayLap = getIntent().getStringExtra("NGAY_LAP");
         String tenKH = getIntent().getStringExtra("TEN_KH");
 
-        tvMaHD.setText("MÃ HÓA ĐƠN: " + maHD);
-        tvNgayLap.setText("NGÀY LẬP: " + ngayLap);
-        tvTenKH.setText(tenKH);
+        tvMaHD.setText("MÃ HÓA ĐƠN: " + (maHD != null ? maHD : "N/A"));
+        tvNgayLap.setText("NGÀY LẬP: " + (ngayLap != null ? ngayLap : "N/A"));
+        tvTenKH.setText(tenKH != null ? tenKH : "Khách vãng lai");
 
         // Load danh sách chi tiết
         List<HoaDonChiTiet> list = dao.getChiTietByMaHD(maHD);

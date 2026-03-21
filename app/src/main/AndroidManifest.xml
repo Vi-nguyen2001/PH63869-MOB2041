@@ -58,7 +58,7 @@
         <activity android:name=".Activity.QLKhachHangActivity" android:exported="false" />
         <activity android:name=".Activity.ThemKhachHangActivity" android:exported="false" />
         <activity android:name=".Activity.SuaKhachHangActivity" android:exported="false" />
-        <activity android:name=".Activity.HoaDonActivity" android:exported="false" />
+        <activity android:name=".Activity.QLHoaDonActivity" android:exported="false" />
         <activity android:name=".Activity.ChiTietHoaDonActivity" android:exported="false" />
         <activity android:name=".Activity.GioHangActivity" android:exported="false" >
         </activity>

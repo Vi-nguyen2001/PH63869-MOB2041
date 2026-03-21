@@ -21,7 +21,7 @@ import fpoly.vinv01.duanmau.DAO.HoaDonDAO;
 import fpoly.vinv01.duanmau.Model.HoaDon;
 import fpoly.vinv01.duanmau.R;
 
-public class HoaDonActivity extends AppCompatActivity implements HoaDonAdapter.HoaDonItemListener {
+public class QLHoaDonActivity extends AppCompatActivity implements HoaDonAdapter.HoaDonItemListener {
 
     private ListView lvHoaDon;
     private TextInputEditText etSearch;
@@ -70,8 +70,11 @@ public class HoaDonActivity extends AppCompatActivity implements HoaDonAdapter.H
     private void filter(String text) {
         List<HoaDon> filteredList = new ArrayList<>();
         for (HoaDon hd : list) {
-            if (hd.getMaHD().toLowerCase().contains(text.toLowerCase()) ||
-                hd.getTenKhachHang().toLowerCase().contains(text.toLowerCase())) {
+            String maHoaDon = hd.getMaHD() != null ? hd.getMaHD() : "";
+            String tenKhach = hd.getTenKhachHang() != null ? hd.getTenKhachHang() : "";
+
+            if (maHoaDon.toLowerCase().contains(text.toLowerCase()) ||
+                tenKhach.toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(hd);
             }
         }

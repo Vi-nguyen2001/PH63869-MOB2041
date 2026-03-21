@@ -59,10 +59,10 @@ public class HoaDonAdapter extends BaseAdapter {
 
         HoaDon hd = list.get(position);
         if (hd != null) {
-            holder.tvMaHD.setText(hd.getMaHD());
-            holder.tvNgayLap.setText(hd.getNgayLap());
-            holder.tvTenNV.setText(hd.getTenNV());
-            holder.tvTenKH.setText(hd.getTenKhachHang());
+            holder.tvMaHD.setText(hd.getMaHD() != null ? hd.getMaHD() : "N/A");
+            holder.tvNgayLap.setText(hd.getNgayLap() != null ? hd.getNgayLap() : "N/A");
+            holder.tvTenNV.setText(hd.getTenNV() != null ? hd.getTenNV() : "N/A");
+            holder.tvTenKH.setText(hd.getTenKhachHang() != null ? hd.getTenKhachHang() : "Khách vãng lai");
             holder.tvTongTien.setText(formatter.format(hd.getTongTien()));
 
             holder.btnDelete.setOnClickListener(v -> {
