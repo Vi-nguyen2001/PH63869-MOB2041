@@ -21,6 +21,7 @@ public class SanPhamAdapter extends BaseAdapter {
     private DecimalFormat formatter = new DecimalFormat("###,###,### VNĐ");
 
     public interface SanPhamItemListener {
+        void onAddToCart(SanPham sp);
         void onEdit(SanPham sp);
         void onDelete(SanPham sp);
     }
@@ -49,6 +50,7 @@ public class SanPhamAdapter extends BaseAdapter {
             holder.tvProductName = convertView.findViewById(R.id.tvProductName);
             holder.tvProductPrice = convertView.findViewById(R.id.tvProductPrice);
             holder.tvProductInfo = convertView.findViewById(R.id.tvProductInfo);
+            holder.btnAddToCart = convertView.findViewById(R.id.btnAddToCart);
             holder.btnEdit = convertView.findViewById(R.id.btnEditProduct);
             holder.btnDelete = convertView.findViewById(R.id.btnDeleteProduct);
             convertView.setTag(holder);
@@ -61,6 +63,10 @@ public class SanPhamAdapter extends BaseAdapter {
             holder.tvProductName.setText(sp.getTenSP());
             holder.tvProductPrice.setText("Giá: " + formatter.format(sp.getGiaBan()));
             holder.tvProductInfo.setText("SL: " + sp.getSoLuong() + " | ĐVT: " + sp.getDonViTinh() + " | Loại: " + sp.getTenDanhMuc());
+
+            holder.btnAddToCart.setOnClickListener(v -> {
+                if (listener != null) listener.onAddToCart(sp);
+            });
 
             holder.btnEdit.setOnClickListener(v -> {
                 if (listener != null) listener.onEdit(sp);
@@ -76,6 +82,6 @@ public class SanPhamAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView tvProductName, tvProductPrice, tvProductInfo;
-        ImageView btnEdit, btnDelete;
+        ImageView btnAddToCart, btnEdit, btnDelete;
     }
 }

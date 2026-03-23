@@ -30,16 +30,42 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:padding="16dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/toolbarCart">
 
         <TextView
-            android:id="@+id/tvCustomerNameCart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Khách hàng: Nguyễn Văn A"
-            android:textColor="@color/gray_text"
-            android:textSize="13sp" />
+            android:text="Thông tin khách hàng"
+            android:textColor="@color/text_title"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCustomerPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nhập SĐT khách hàng (Bắt buộc)"
+                android:inputType="phone"
+                android:background="@android:color/transparent"
+                android:padding="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvCustomerNameResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Khách hàng chưa được xác nhận"
+            android:visibility="gone"
+            android:textColor="#27AE60"
+            android:layout_marginTop="4dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <ListView

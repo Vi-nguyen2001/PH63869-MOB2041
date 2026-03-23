@@ -19,9 +19,14 @@ import fpoly.vinv01.duanmau.Model.HoaDon;
 import fpoly.vinv01.duanmau.Model.HoaDonChiTiet;
 import fpoly.vinv01.duanmau.Model.GioHang;
 import fpoly.vinv01.duanmau.R;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.textfield.TextInputEditText;
+import fpoly.vinv01.duanmau.DAO.KhachHangDAO;
+import fpoly.vinv01.duanmau.Model.KhachHang;
 
 public class GioHangActivity extends AppCompatActivity implements GioHangAdapter.GioHangListener {
-
+    private TextInputEditText etCustomerPhone;
+    private Toolbar toolbar;
     private ListView lvGioHang;
     private TextView tvTongTien;
     private MaterialButton btnThanhToan;
@@ -34,10 +39,22 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_giohang);
 
+
         lvGioHang = findViewById(R.id.lvGioHang);
         tvTongTien = findViewById(R.id.tvTongTienCart);
         btnThanhToan = findViewById(R.id.btnThanhToan);
         hoaDonDAO = new HoaDonDAO(this);
+
+        etCustomerPhone = findViewById(R.id.etCustomerPhone);
+
+        // Thiết lập Toolbar để nhấn nút Back
+        toolbar = findViewById(R.id.toolbarCart);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish()); // Nhấn mũi tên để thoát/quay lại
 
         adapter = new GioHangAdapter(this, CartManager.listGioHang, this);
         lvGioHang.setAdapter(adapter);
@@ -64,6 +81,20 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
             return;
         }
 
+        // Cập nhật: Kiểm tra số điện thoại khách hàng
+        String phone = etCustomerPhone.getText().toString().trim();
+        if (phone.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập SĐT khách hàng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        KhachHangDAO khDAO = new KhachHangDAO(this);
+        KhachHang kh = khDAO.getKhachHangByPhone(phone);
+        if (kh == null) {
+            Toast.makeText(this, "SĐT không tồn tại, vui lòng thêm KH trước!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         // 1. Tạo đối tượng HoaDon
         String maHD = hoaDonDAO.getNewMaHD();
         String ngay = new SimpleDateFormat("dd/MM/yyyy | HH:mm", Locale.getDefault()).format(new Date());
@@ -85,7 +116,7 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
         android.content.SharedPreferences pref = getSharedPreferences("LOGIN", MODE_PRIVATE);
         String maNV = pref.getString("username", "NV001");
 
-        HoaDon hd = new HoaDon(maHD, ngay, maNV, "KH001","Khách vãng lai", tongTien);
+        HoaDon hd = new HoaDon(maHD, ngay, maNV, kh.getMaKH(), kh.getHoTen(), tongTien);
 
 
         if (hoaDonDAO.insertFull(hd, listCT)) {

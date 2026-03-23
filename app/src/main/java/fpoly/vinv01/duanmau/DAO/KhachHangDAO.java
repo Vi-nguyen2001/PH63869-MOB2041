@@ -142,6 +142,22 @@ public class KhachHangDAO {
         return exists;
     }
 
+    public KhachHang getKhachHangByPhone(String phone) {
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM KhachHang WHERE dienThoai = ?", new String[]{phone});
+        KhachHang kh = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            kh = new KhachHang();
+            kh.setMaKH(cursor.getString(0));
+            kh.setHoTen(cursor.getString(1));
+            kh.setDienThoai(cursor.getString(2));
+            kh.setEmail(cursor.getString(3));
+            kh.setDiaChi(cursor.getString(4));
+            cursor.close();
+        }
+        return kh;
+    }
+
     public boolean CheckKHExists(String maKH) {//kiểm tra khách hàng óc trong hóa đơn chưa
         db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM HoaDon WHERE maKH = ?", new String[]{maKH});

@@ -1,6 +1,7 @@
 package fpoly.vinv01.duanmau.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -27,21 +28,40 @@ public class trangchunhanvien extends AppCompatActivity {
         cardLogout = findViewById(R.id.cardLogout);
 
         // Set Click Listeners
-        cardCategory.setOnClickListener(v -> showToast("Quản lý danh mục"));
-        cardProduct.setOnClickListener(v -> showToast("Quản lý sản phẩm"));
-        cardCustomer.setOnClickListener(v -> showToast("Quản lý khách hàng"));
-        cardInvoice.setOnClickListener(v -> showToast("Quản lý hóa đơn"));
-        cardPassword.setOnClickListener(v -> showToast("Đổi mật khẩu"));
+        cardCategory.setOnClickListener(v -> {
+            Intent intent = new Intent(trangchunhanvien.this, QLDanhMucActivity.class);
+            startActivity(intent);
+        });
+        cardProduct.setOnClickListener(v -> {
+            Intent intent = new Intent(trangchunhanvien.this, QLSanPhamActivity.class);
+            startActivity(intent);
+        });
+        cardCustomer.setOnClickListener(v -> {
+            Intent intent = new Intent(trangchunhanvien.this, QLKhachHangActivity.class);
+            startActivity(intent);
+        });
+        cardInvoice.setOnClickListener(v -> {
+            Intent intent = new Intent(trangchunhanvien.this, QLHoaDonActivity.class);
+            startActivity(intent);
+        });
+        cardPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(trangchunhanvien.this, DoiMatKhauActivity.class);
+            startActivity(intent);
+        });
         
         cardLogout.setOnClickListener(v -> {
+            //xóa trạng thái tự động đăng nhập
+            SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("remember", false);//chặn tự động login
+            editor.apply();
+            Toast.makeText(trangchunhanvien.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(trangchunhanvien.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
+
     }
 
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 }

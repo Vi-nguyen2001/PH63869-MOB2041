@@ -13,6 +13,16 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import com.google.android.material.textfield.TextInputEditText;
+
+import fpoly.vinv01.duanmau.CartManager;
+import fpoly.vinv01.duanmau.Model.GioHang;
+import java.util.ArrayList;
 
 import fpoly.vinv01.duanmau.R;
 import fpoly.vinv01.duanmau.Model.SanPham;
@@ -26,6 +36,9 @@ public class QLSanPhamActivity extends AppCompatActivity implements SanPhamAdapt
     private SanPhamDAO dao;
     private List<SanPham> list;
     private SanPhamAdapter adapter;
+    private TextInputEditText etSearch;
+    private TextView tvCartBadge;
+    private RelativeLayout rlCartIconLayout;
     private static final int REQUEST_CODE_ADD = 1;
     private static final int REQUEST_CODE_EDIT = 2;
 
@@ -45,7 +58,29 @@ public class QLSanPhamActivity extends AppCompatActivity implements SanPhamAdapt
         fabAdd = findViewById(R.id.fabAddProduct);
         dao = new SanPhamDAO(this);
 
+        // Map views cho Search và Cart
+        etSearch = findViewById(R.id.etSearchSP);
+        tvCartBadge = findViewById(R.id.tvCartBadge);
+        rlCartIconLayout = findViewById(R.id.rlCartIconLayout);
+
         loadData();
+        updateCartBadge();
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        rlCartIconLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(QLSanPhamActivity.this, GioHangActivity.class);
+            startActivity(intent);
+        });
 
         fabAdd.setOnClickListener(v -> {
             Intent intent = new Intent(QLSanPhamActivity.this, ThemSanPhamActivity.class);
@@ -59,12 +94,49 @@ public class QLSanPhamActivity extends AppCompatActivity implements SanPhamAdapt
         lvSanPham.setAdapter(adapter);
     }
 
+    private void filter(String text) {
+        List<SanPham> filteredList = new ArrayList<>();
+        for (SanPham sp : list) {
+            String name = sp.getTenSP() != null ? sp.getTenSP().toLowerCase() : "";
+            if (name.contains(text.toLowerCase())) {
+                filteredList.add(sp);
+            }
+        }
+        adapter = new SanPhamAdapter(this, filteredList, this);
+        lvSanPham.setAdapter(adapter);
+    }
+
+    private void updateCartBadge() {
+        // Cập nhật: đếm số lượng mặt hàng (loại sản phẩm)
+        int count = CartManager.listGioHang.size();
+        if (count > 0) {
+            tvCartBadge.setVisibility(View.VISIBLE);
+            tvCartBadge.setText(String.valueOf(count));
+        } else {
+            tvCartBadge.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartBadge();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             loadData();
         }
+    }
+
+    @Override
+    public void onAddToCart(SanPham sp) {
+        GioHang gh = new GioHang(sp.getMaSP(), sp.getTenSP(), sp.getGiaBan(), 1);
+        CartManager.addToCart(gh);
+        updateCartBadge();
+        Toast.makeText(this, "Đã thêm " + sp.getTenSP() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
     }
 
     @Override

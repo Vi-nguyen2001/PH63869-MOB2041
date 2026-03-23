@@ -88,6 +88,16 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/btnAddToCart"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="8dp"
+                android:src="@drawable/outline_add_shopping_cart_24"
+                app:tint="#4CAF50"
+                android:layout_marginEnd="4dp"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
                 android:id="@+id/btnEditProduct"
                 android:layout_width="36dp"
                 android:layout_height="36dp"

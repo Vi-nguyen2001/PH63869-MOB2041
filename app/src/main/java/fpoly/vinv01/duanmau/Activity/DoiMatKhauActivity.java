@@ -96,7 +96,7 @@ public class DoiMatKhauActivity extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed(); // Hoặc finish();
+        finish(); // Đóng Activity hiện tại
         return true;
     }
 }

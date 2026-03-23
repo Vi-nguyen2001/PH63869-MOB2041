@@ -91,7 +91,8 @@ public class trangchuquanly extends AppCompatActivity {
         });
 
         cardPassword.setOnClickListener(v -> {
-            // Thêm logic chuyển màn hình hoặc xử lý tại đây
+            Intent intent = new Intent(trangchuquanly.this, DoiMatKhauActivity.class);
+            startActivity(intent);
         });
 
         cardLogout.setOnClickListener(v -> {
