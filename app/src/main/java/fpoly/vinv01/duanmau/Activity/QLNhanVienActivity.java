@@ -2,6 +2,7 @@ package fpoly.vinv01.duanmau.Activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -111,6 +112,14 @@ public class QLNhanVienActivity extends AppCompatActivity implements NhanVienAda
 
     @Override
     public void onDelete(NhanVien nv) {
+        SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", MODE_PRIVATE);
+        String loggedInUser = sharedPreferences.getString("username", "");
+        
+        if (nv.getMaNV().equalsIgnoreCase(loggedInUser)) {
+            Toast.makeText(this, "Không thể xóa tài khoản đang đăng nhập", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa nhân viên '" + nv.getHoTen() + "'?")

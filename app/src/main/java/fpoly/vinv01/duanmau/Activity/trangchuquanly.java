@@ -82,7 +82,7 @@ public class trangchuquanly extends AppCompatActivity {
         cardEmployee.setOnClickListener(v -> {
             Intent intent = new Intent(trangchuquanly.this, QLNhanVienActivity.class);
             startActivity(intent);
-            finish();
+
         });
 
         cardInvoice.setOnClickListener(v -> {

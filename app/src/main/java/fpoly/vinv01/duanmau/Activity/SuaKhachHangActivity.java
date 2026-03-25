@@ -1,6 +1,7 @@
 package fpoly.vinv01.duanmau.Activity;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +42,12 @@ public class SuaKhachHangActivity extends ThemKhachHangActivity {
         String email = etEmailKH.getText().toString().trim();
         String dc = etDiaChiKH.getText().toString().trim();
 
-        if (ten.isEmpty() || dt.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập họ tên và số điện thoại", Toast.LENGTH_SHORT).show();
+        if (ten.isEmpty() || dt.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ họ tên, số điện thoại và email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Định dạng email không hợp lệ", Toast.LENGTH_SHORT).show();
             return;
         }
 
