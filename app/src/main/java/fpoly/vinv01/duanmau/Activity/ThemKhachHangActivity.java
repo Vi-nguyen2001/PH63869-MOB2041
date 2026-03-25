@@ -66,6 +66,10 @@ public class ThemKhachHangActivity extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng nhập đầy đủ họ tên, số điện thoại và email", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (!dt.matches("\\d{10}")) {
+            Toast.makeText(this, "Số điện thoại nhập không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Định dạng email không hợp lệ", Toast.LENGTH_SHORT).show();
             return;

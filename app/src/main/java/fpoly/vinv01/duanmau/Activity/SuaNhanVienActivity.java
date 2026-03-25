@@ -58,6 +58,17 @@ public class SuaNhanVienActivity extends ThemNhanVienActivity {
             return;
         }
 
+        try {
+            int luong = Integer.parseInt(luongStr);
+            if (luong <= 0) {
+                Toast.makeText(this, "Bắt buộc nhập lương > 0", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Lương không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         currentNV.setHoTen(ten);
         currentNV.setDiaChi(dc);
         currentNV.setLuong(Integer.parseInt(luongStr));

@@ -82,6 +82,17 @@ public class ThemNhanVienActivity extends AppCompatActivity {
             return;
         }
 
+        try {
+            int luong = Integer.parseInt(luongStr);
+            if (luong <= 0) {
+                Toast.makeText(this, "Bắt buộc nhập lương > 0", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Lương không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         NhanVien nv = new NhanVien(ma, ten, dc, arrChucVu[posCV], Integer.parseInt(luongStr), "123456");
         if (dao.insert(nv) != -1) {
             Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
