@@ -65,16 +65,6 @@ public class TopProductsActivity extends AppCompatActivity {
         etFromDate.setOnClickListener(v -> showDatePicker(etFromDate));
         etToDate.setOnClickListener(v -> showDatePicker(etToDate));
 
-        // Setup ListView with Dummy Data
-        productList = new ArrayList<>();
-        // Add sample data to test UI
-        productList.add(new ProductTop(1, "123", "Trà Xanh Thái Nguyên Đặc Biệt", 1240, R.drawable.anhsanpham));
-        productList.add(new ProductTop(2, "113", "Cà Phê Arabica Nguyên Chất", 956, R.drawable.anhsanpham));
-        productList.add(new ProductTop(3, "103", "Mật Ong Hoa Nhãn 500ml", 812, R.drawable.anhsanpham));
-        productList.add(new ProductTop(4, "102", "Hạt Điều Rang Muối Loại A", 645, R.drawable.anhsanpham));
-        productList.add(new ProductTop(5, "101", "Gạo Lứt Huyết Rồng 2kg", 432, R.drawable.anhsanpham));
-
-        // Use the updated BaseAdapter constructor
         adapter = new TopProductAdapter(this, productList);
         lvTopProducts.setAdapter(adapter);
 
@@ -87,6 +77,19 @@ public class TopProductsActivity extends AppCompatActivity {
             // 1. Kiểm tra nhập liệu
             if (fromDate.isEmpty() || toDate.isEmpty() || quantityStr.isEmpty()) {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                java.util.Date startDate = dateFormat.parse(fromDate);
+                java.util.Date endDate = dateFormat.parse(toDate);
+                if (startDate.after(endDate)) {
+                    Toast.makeText(this, "Ngày Bắt Đầu Phải Nhỏ Hơn Ngày Kết Thúc", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Định dạng ngày không hợp lệ", Toast.LENGTH_SHORT).show();
                 return;
             }
 

@@ -158,7 +158,7 @@ public class KhachHangDAO {
         return kh;
     }
 
-    public boolean CheckKHExists(String maKH) {//kiểm tra khách hàng óc trong hóa đơn chưa
+    public boolean CheckKHExists(String maKH) {//kiểm tra khách hàng có trong hóa đơn chưa
         db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM HoaDon WHERE maKH = ?", new String[]{maKH});
         boolean exists = cursor.getCount() > 0;

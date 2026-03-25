@@ -65,14 +65,28 @@ public class thongkedoanhthuActivity extends AppCompatActivity {
 
             if (fromDate.isEmpty() || toDate.isEmpty()) {
                 Toast.makeText(this, "Vui lòng chọn đầy đủ khoảng ngày", Toast.LENGTH_SHORT).show();
-            } else {
-                // Logic truy vấn từ Database sẽ được thêm ở đây
-                int doanhThu = thongKeDAO.getDoanhThu(fromDate, toDate);
-                //định dạng tiền
-                DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-                tvTotalRevenue.setText(decimalFormat.format(doanhThu) + " VNĐ");
-                Toast.makeText(this, "Đang truy vấn dữ liệu từ " + fromDate + " đến " + toDate, Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            try {
+                java.util.Date startDate = dateFormat.parse(fromDate);
+                java.util.Date endDate = dateFormat.parse(toDate);
+                if (startDate.after(endDate)) {
+                    Toast.makeText(this, "Ngày Bắt Đầu Phải Nhỏ Hơn Ngày Kết Thúc", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Định dạng ngày không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Logic truy vấn từ Database sẽ được thêm ở đây
+            int doanhThu = thongKeDAO.getDoanhThu(fromDate, toDate);
+            //định dạng tiền
+            DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+            tvTotalRevenue.setText(decimalFormat.format(doanhThu) + " VNĐ");
+            Toast.makeText(this, "Đang truy vấn dữ liệu từ " + fromDate + " đến " + toDate, Toast.LENGTH_SHORT).show();
         });
     }
 

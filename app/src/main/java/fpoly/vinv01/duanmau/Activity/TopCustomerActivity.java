@@ -38,7 +38,7 @@ public class TopCustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_customer);
 
-        // Initialize Toolbar
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -48,7 +48,7 @@ public class TopCustomerActivity extends AppCompatActivity {
             finish();
         });
 
-        // Initialize Views
+
         etFromDate = findViewById(R.id.etFromDate);
         etToDate = findViewById(R.id.etToDate);
         etQuantity = findViewById(R.id.etQuantity);
@@ -59,23 +59,18 @@ public class TopCustomerActivity extends AppCompatActivity {
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
-        // Date selection
+
         etFromDate.setOnClickListener(v -> showDatePicker(etFromDate));
         etToDate.setOnClickListener(v -> showDatePicker(etToDate));
-
-        // Setup ListView with Dummy Data
         customerList = new ArrayList<>();
-        customerList.add(new CustomerTop(1, 234, "Nguyễn Văn A", 45200000, 12, R.drawable.anhkhachhang));
-        customerList.add(new CustomerTop(2, 112, "Trần Thị B", 32850000, 8, R.drawable.anhkhachhang));
-        customerList.add(new CustomerTop(3, 890, "Lê Hoàng C", 28400000, 15, R.drawable.anhkhachhang));
-        customerList.add(new CustomerTop(4, 543, "Phạm Minh D", 15500000, 5, R.drawable.anhkhachhang));
-        customerList.add(new CustomerTop(5, 321, "Hoàng Thanh E", 12100000, 4, R.drawable.anhkhachhang));
+
+
 
         adapter = new TopCustomerAdapter(this, customerList);
         lvTopCustomers.setAdapter(adapter);
         tvResultCount.setText("Đã tải " + customerList.size() + " kết quả");
 
-        // Query Button
+
         btnQuery.setOnClickListener(v -> {
             String fromDate = etFromDate.getText().toString();
             String toDate = etToDate.getText().toString();
@@ -85,6 +80,20 @@ public class TopCustomerActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            try {
+                java.util.Date startDate = dateFormat.parse(fromDate);
+                java.util.Date endDate = dateFormat.parse(toDate);
+                if (startDate.after(endDate)) {
+                    Toast.makeText(this, "Ngày Bắt Đầu Phải Nhỏ Hơn Ngày Kết Thúc", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Định dạng ngày không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             int limit = Integer.parseInt(quantity);
             ThongKeDAO thongKeDAO = new ThongKeDAO(this);
             List<CustomerTop> topCustomers = thongKeDAO.getTopCustomersByDate(fromDate, toDate, limit);

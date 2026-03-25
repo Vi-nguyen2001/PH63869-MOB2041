@@ -60,51 +60,72 @@ public class ThongKeDAO {
     }
 
 
-    public List<CustomerTop> getTopCustomersByDate(String fromDate, String toDate, int limit) {//top khách hàng
+    public List<CustomerTop> getTopCustomersByDate(String fromDate, String toDate, int limit) {
         List<CustomerTop> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+
 
         String sql = "SELECT kh.maKH, kh.hoTen, SUM(hd.tongTien) as totalSpent, COUNT(hd.maHD) as orderCount " +
                 "FROM KhachHang kh " +
                 "INNER JOIN HoaDon hd ON kh.maKH = hd.maKH " +
-                "WHERE hd.ngayLap BETWEEN ? AND ? " +
-                "GROUP BY kh.maKH " +
+                "WHERE (substr(hd.ngayLap,7,4) || substr(hd.ngayLap,4,2) || substr(hd.ngayLap,1,2)) " +
+                "BETWEEN ? AND ? " +
+                "GROUP BY kh.maKH, kh.hoTen " +
                 "ORDER BY totalSpent DESC " +
                 "LIMIT ?";
 
-        Cursor cursor = db.rawQuery(sql, new String[]{fromDate, toDate, String.valueOf(limit)});
+        //  Format tham số truyền vào cũng về yyyyMMdd
+        String fromDateClean = fromDate.substring(6,10) + fromDate.substring(3,5) + fromDate.substring(0,2);
+        String toDateClean = toDate.substring(6,10) + toDate.substring(3,5) + toDate.substring(0,2);
+
+        Cursor cursor = db.rawQuery(sql, new String[]{fromDateClean, toDateClean, String.valueOf(limit)});
+
         int rank = 1;
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                int idInt = Integer.parseInt(cursor.getString(0).substring(2));
+                // Lấy mã khách hàng (Ví dụ: KH001)
+                String maKH = cursor.getString(0);
+                // Tách số an toàn: KH001 -> 1
+                int idInt = 0;
+                try {
+                    idInt = Integer.parseInt(maKH.substring(2));
+                } catch (Exception e) { e.printStackTrace(); }
+
                 list.add(new CustomerTop(
                         rank++,
                         idInt,
-                        cursor.getString(1), // hoTen
-                        cursor.getDouble(2), // totalSpent
-                        cursor.getInt(3),    // orderCount
+                        cursor.getString(1),
+                        cursor.getDouble(2),
+                        cursor.getInt(3),
                         fpoly.vinv01.duanmau.R.drawable.anhkhachhang
                 ));
                 cursor.moveToNext();
             }
+            cursor.close();
         }
-        cursor.close();
         return list;
     }
 
     public int getDoanhThu(String tuNgay, String denNgay) {
-        String sql = "SELECT SUM(tongTien) FROM HoaDon WHERE substr(ngayLap,1,10) BETWEEN ? AND ?";
-        List<Integer> list = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, new String[]{tuNgay, denNgay});
 
-        while (cursor.moveToNext()) {
-            try {
-                list.add(Integer.parseInt(cursor.getString(0)));
-            } catch (Exception e) {
-                list.add(0);
-            }
+        String sql = "SELECT SUM(tongTien) FROM HoaDon WHERE " +
+                "(substr(ngayLap,7,4) || substr(ngayLap,4,2) || substr(ngayLap,1,2)) " +
+                "BETWEEN ? AND ?";
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        //  Format tham số truyền vào cũng về yyyyMMdd
+        String fromDate = tuNgay.substring(6,10) + tuNgay.substring(3,5) + tuNgay.substring(0,2);
+        String toDate = denNgay.substring(6,10) + denNgay.substring(3,5) + denNgay.substring(0,2);
+
+        Cursor cursor = db.rawQuery(sql, new String[]{fromDate, toDate});
+
+        int result = 0;
+        if (cursor.moveToFirst()) {
+            result = cursor.getInt(0);
         }
-        return list.get(0);
+        cursor.close();
+
+        return result;
     }
 }
