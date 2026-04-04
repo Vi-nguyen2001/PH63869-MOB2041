@@ -22,7 +22,7 @@ public class DoiMatKhauActivity extends AppCompatActivity {
     private TextInputEditText etCurrent, etNew, etConfirm;
     private MaterialButton btnSave, btnCancel;
     private NhanVienDAO dao;
-    private String maNV;
+    private String  maNV;
 
 
     @Override

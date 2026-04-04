@@ -1,36 +1,45 @@
 package fpoly.vinv01.duanmau.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 
+import fpoly.vinv01.duanmau.Fragment.CaiDatFragment;
+import fpoly.vinv01.duanmau.Fragment.QLSanPhamFragment;
 import fpoly.vinv01.duanmau.R;
 
 public class trangchuquanly extends AppCompatActivity {
 
-    // Khai báo các CardView cho phần Thống kê
-    private MaterialCardView cardRevenue, cardTopProduct, cardTopCustomer;
+    private BottomNavigationView bottomNavigationView;
+    private View oldContent, frameContainer;
 
-    // Khai báo các CardView cho phần Quản lý
-    private MaterialCardView cardCategory, cardProduct, cardCustomer,
-            cardEmployee, cardInvoice, cardPassword, cardLogout;
+    // Các CardView cũ
+    private MaterialCardView cardRevenue, cardTopProduct, cardTopCustomer;
+    private MaterialCardView cardCategory, cardProduct, cardCustomer, cardEmployee, cardInvoice, cardPassword, cardLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trangchuquanly);
 
-        // 1. Ánh xạ ID cho các CardView phần Thống kê
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        oldContent = findViewById(R.id.old_content);
+        frameContainer = findViewById(R.id.frame_container);
+
+        // Ánh xạ các thành phần cũ
         cardRevenue = findViewById(R.id.cardRevenue);
         cardTopProduct = findViewById(R.id.cardTopProduct);
         cardTopCustomer = findViewById(R.id.cardTopCustomer);
-
-        // 2. Ánh xạ ID cho các CardView phần Quản lý
         cardCategory = findViewById(R.id.cardCategory);
         cardProduct = findViewById(R.id.cardProduct);
         cardCustomer = findViewById(R.id.cardCustomer);
@@ -39,79 +48,96 @@ public class trangchuquanly extends AppCompatActivity {
         cardPassword = findViewById(R.id.cardPassword);
         cardLogout = findViewById(R.id.cardLogout);
 
-        // 3. Thiết lập sự kiện click cho các CardView
         setupClickListeners();
+
+        if (savedInstanceState == null) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                oldContent.setVisibility(View.VISIBLE);
+                frameContainer.setVisibility(View.GONE);
+                return true;
+            } else if (id == R.id.nav_product) {
+                oldContent.setVisibility(View.GONE);
+                frameContainer.setVisibility(View.VISIBLE);
+                replaceFragment(new QLSanPhamFragment());
+                return true;
+            } else if (id == R.id.nav_setting) {
+                oldContent.setVisibility(View.GONE);
+                frameContainer.setVisibility(View.VISIBLE);
+                replaceFragment(new CaiDatFragment());
+                return true;
+            }
+            return false;
+        });
     }
 
     private void setupClickListeners() {
-        // Sự kiện cho phần Thống kê
         cardRevenue.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, thongkedoanhthuActivity.class);
+            Intent intent = new Intent(this, thongkedoanhthuActivity.class);
             startActivity(intent);
-            // Thêm logic chuyển màn hình hoặc xử lý tại đây
         });
 
         cardTopProduct.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, TopProductsActivity.class);
+            Intent intent = new Intent(this, TopProductsActivity.class);
             startActivity(intent);
-            // Thêm logic chuyển màn hình hoặc xử lý tại đây
         });
 
         cardTopCustomer.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, TopCustomerActivity.class);
+            Intent intent = new Intent(this, TopCustomerActivity.class);
             startActivity(intent);
         });
 
-        // Sự kiện cho phần Quản lý
         cardCategory.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, QLDanhMucActivity.class);
+            Intent intent = new Intent(this, QLDanhMucActivity.class);
             startActivity(intent);
-
         });
 
         cardProduct.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, QLSanPhamActivity.class);
-            startActivity(intent);
+            bottomNavigationView.setSelectedItemId(R.id.nav_product);
         });
 
         cardCustomer.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, QLKhachHangActivity.class);
+            Intent intent = new Intent(this, QLKhachHangActivity.class);
             startActivity(intent);
         });
 
         cardEmployee.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, QLNhanVienActivity.class);
+            Intent intent = new Intent(this, QLNhanVienActivity.class);
             startActivity(intent);
-
         });
 
         cardInvoice.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, QLHoaDonActivity.class);
+            Intent intent = new Intent(this, QLHoaDonActivity.class);
             startActivity(intent);
         });
 
         cardPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(trangchuquanly.this, DoiMatKhauActivity.class);
+            Intent intent = new Intent(this, DoiMatKhauActivity.class);
             startActivity(intent);
         });
 
         cardLogout.setOnClickListener(v -> {
-            // 1. Mở SharedPreferences với đúng tên "LOGIN" mà Vĩ đã đặt bên LoginActivity
-            SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            // 2. Chỉnh trạng thái remember thành false để nó không tự động login nữa
             editor.putBoolean("remember", false);
-            // Nếu muốn xóa sạch cả tên đăng nhập và mật khẩu thì dùng: editor.clear();
             editor.apply();
 
-            Toast.makeText(trangchuquanly.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
 
-            // 3. Chuyển về Login và xóa Stack
-            Intent intent = new Intent(trangchuquanly.this, LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, fragment);
+        transaction.commit();
     }
 }

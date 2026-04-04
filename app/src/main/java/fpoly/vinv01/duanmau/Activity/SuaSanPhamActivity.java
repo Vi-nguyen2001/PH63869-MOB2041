@@ -33,7 +33,7 @@ public class SuaSanPhamActivity extends ThemSanPhamActivity {
 
         // 3. Tùy chỉnh nút bấm
         btnSave.setText("Lưu thay đổi");
-        btnSave.setIcon(null); // Nếu muốn bỏ icon hoặc thay icon khác
+        btnSave.setIcon(null);
 
         // 4. Lấy dữ liệu sản phẩm từ Intent truyền sang
         Bundle bundle = getIntent().getExtras();
