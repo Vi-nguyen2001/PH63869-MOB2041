@@ -103,12 +103,11 @@ public class QLSanPhamFragment extends Fragment implements SanPhamAdapter.SanPha
     }
 
     private void filter(String text) {
-        List<SanPham> filteredList = new ArrayList<>();
-        for (SanPham sp : list) {
-            String name = sp.getTenSP() != null ? sp.getTenSP().toLowerCase() : "";
-            if (name.contains(text.toLowerCase())) {
-                filteredList.add(sp);
-            }
+        List<SanPham> filteredList;
+        if (text == null || text.trim().isEmpty()) {
+            filteredList = dao.getAll(); // Nếu rỗng thì tải lại tất cả
+        } else {
+            filteredList = dao.searchSanPham(text.trim()); // Gọi DAO để tìm trong DB
         }
         adapter = new SanPhamAdapter(requireContext(), filteredList, this);
         lvSanPham.setAdapter(adapter);

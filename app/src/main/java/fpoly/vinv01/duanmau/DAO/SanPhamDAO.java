@@ -117,4 +117,41 @@ public class SanPhamDAO {
         return kq;
 
     }
+
+    public List<SanPham> searchSanPham(String keyword) {
+        List<SanPham> list = new ArrayList<>();
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            db.beginTransaction();
+            String sql = "SELECT sp.*, dm.tenDanhMuc " +
+                    "FROM SanPham sp " +
+                    "LEFT JOIN DanhMuc dm ON sp.maDanhMuc = dm.maDanhMuc " +
+                    "WHERE sp.tenSP LIKE ?";
+            cursor = db.rawQuery(sql, new String[]{"%" + keyword + "%"});
+            if (cursor != null && cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    SanPham sp = new SanPham();
+                    sp.setMaSP(cursor.getInt(0));
+                    sp.setTenSP(cursor.getString(1));
+                    sp.setGiaBan(cursor.getInt(2));
+                    sp.setDonViTinh(cursor.getString(3));
+                    sp.setSoLuong(cursor.getInt(4));
+                    sp.setNgayNhap(cursor.getString(5));
+                    sp.setMaDanhMuc(cursor.getInt(6));
+                    sp.setTenDanhMuc(cursor.getString(7));
+                    list.add(sp);
+                    cursor.moveToNext();
+                }
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+            db.endTransaction();
+        }
+        return list;
+    }
 }
