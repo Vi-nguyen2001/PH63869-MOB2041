@@ -11,7 +11,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@android:drawable/ic_menu_revert">
+        app:navigationIcon="@android:drawable/ic_menu_revert"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,35 +28,47 @@
         android:id="@+id/llCustomerCart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center_vertical"
         android:padding="16dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/toolbarCart">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thông tin khách hàng"
-            android:textColor="@color/text_title"
-            android:textStyle="bold"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:hintEnabled="false">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCustomerPhone"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Nhập SĐT khách hàng (Bắt buộc)"
-                android:inputType="phone"
-                android:background="@android:color/transparent"
-                android:padding="8dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="1"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCustomerPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập SĐT khách hàng (Bắt buộc)"
+                    android:inputType="phone"
+                    android:background="@android:color/white"
+                    android:padding="15dp"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/ivAddCustomer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/anhkhachhang"
+                app:tint="@color/text_title"
+                android:contentDescription="Thêm khách hàng" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvCustomerNameResult"

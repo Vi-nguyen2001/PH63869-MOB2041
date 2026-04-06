@@ -65,6 +65,7 @@ public class TopProductsActivity extends AppCompatActivity {
         etFromDate.setOnClickListener(v -> showDatePicker(etFromDate));
         etToDate.setOnClickListener(v -> showDatePicker(etToDate));
 
+        productList = new ArrayList<>();
         adapter = new TopProductAdapter(this, productList);
         lvTopProducts.setAdapter(adapter);
 

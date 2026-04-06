@@ -1,9 +1,13 @@
 package fpoly.vinv01.duanmau.Activity;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.app.Dialog;
+import android.widget.ArrayAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import java.text.DecimalFormat;
@@ -26,6 +30,8 @@ import fpoly.vinv01.duanmau.Model.KhachHang;
 
 public class GioHangActivity extends AppCompatActivity implements GioHangAdapter.GioHangListener {
     private TextInputEditText etCustomerPhone;
+    private ImageView ivAddCustomer;
+    private TextView tvCustomerNameResult;
     private Toolbar toolbar;
     private ListView lvGioHang;
     private TextView tvTongTien;
@@ -46,6 +52,25 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
         hoaDonDAO = new HoaDonDAO(this);
 
         etCustomerPhone = findViewById(R.id.etCustomerPhone);
+        ivAddCustomer = findViewById(R.id.ivAddCustomer);
+        tvCustomerNameResult = findViewById(R.id.tvCustomerNameResult);
+
+        ivAddCustomer.setOnClickListener(v -> {
+            showSelectCustomerDialog();
+        });
+
+        etCustomerPhone.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                checkCustomerPhone(s.toString().trim());
+            }
+        });
 
         // Thiết lập Toolbar để nhấn nút Back
         toolbar = findViewById(R.id.toolbarCart);
@@ -62,6 +87,67 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
         tinhTongTien();
 
         btnThanhToan.setOnClickListener(v -> clickThanhToan());
+    }
+
+    private void showSelectCustomerDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_select_customer);
+        dialog.getWindow().setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        ListView lvDialogCustomers = dialog.findViewById(R.id.lvDialogCustomers);
+        com.google.android.material.button.MaterialButton btnDialogAddCustomer = dialog.findViewById(R.id.btnDialogAddCustomer);
+
+        KhachHangDAO khDAO = new KhachHangDAO(this);
+        List<KhachHang> listKhachHang = khDAO.getAll();
+        List<String> listDisplay = new ArrayList<>();
+        for (KhachHang kh : listKhachHang) {
+            listDisplay.add(kh.getHoTen() + " - " + kh.getDienThoai());
+        }
+
+        ArrayAdapter<String> dialogAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listDisplay);
+        lvDialogCustomers.setAdapter(dialogAdapter);
+
+        lvDialogCustomers.setOnItemClickListener((parent, view, position, id) -> {
+            KhachHang selectedKhachHang = listKhachHang.get(position);
+            etCustomerPhone.setText(selectedKhachHang.getDienThoai());
+            dialog.dismiss();
+        });
+
+        btnDialogAddCustomer.setOnClickListener(v -> {
+            Intent intent = new Intent(GioHangActivity.this, ThemKhachHangActivity.class);
+            startActivity(intent);
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    private void checkCustomerPhone(String phone) {
+        if (phone.isEmpty()) {
+            tvCustomerNameResult.setVisibility(android.view.View.GONE);
+            return;
+        }
+        KhachHangDAO khDAO = new KhachHangDAO(this);
+        KhachHang kh = khDAO.getKhachHangByPhone(phone);
+        tvCustomerNameResult.setVisibility(android.view.View.VISIBLE);
+        if (kh != null) {
+            tvCustomerNameResult.setText("Khách hàng: " + kh.getHoTen());
+            tvCustomerNameResult.setTextColor(android.graphics.Color.parseColor("#27AE60"));
+        } else {
+            tvCustomerNameResult.setText("Chưa có trong danh sách");
+            tvCustomerNameResult.setTextColor(android.graphics.Color.parseColor("#E74C3C"));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (etCustomerPhone != null) {
+            String currentPhone = etCustomerPhone.getText().toString().trim();
+            if (!currentPhone.isEmpty()) {
+                checkCustomerPhone(currentPhone);
+            }
+        }
     }
 
     private void tinhTongTien() {
