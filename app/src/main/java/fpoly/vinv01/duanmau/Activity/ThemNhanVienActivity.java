@@ -11,6 +11,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import fpoly.vinv01.duanmau.DAO.NhanVienDAO;
 import fpoly.vinv01.duanmau.Model.NhanVien;
 import fpoly.vinv01.duanmau.R;
+import fpoly.vinv01.duanmau.SecurityUtil;
 
 public class ThemNhanVienActivity extends AppCompatActivity {
     protected TextInputEditText etMaNV, etHoTen, etDiaChi, etLuong;
@@ -93,7 +94,8 @@ public class ThemNhanVienActivity extends AppCompatActivity {
             return;
         }
 
-        NhanVien nv = new NhanVien(ma, ten, dc, arrChucVu[posCV], Integer.parseInt(luongStr), "123456");
+        String hashedPass = SecurityUtil.hashPassword("123456");
+        NhanVien nv = new NhanVien(ma, ten, dc, arrChucVu[posCV], Integer.parseInt(luongStr), hashedPass);
         if (dao.insert(nv) != -1) {
             Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK);

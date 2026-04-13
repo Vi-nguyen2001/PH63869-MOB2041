@@ -8,14 +8,18 @@ import android.widget.Toast;
 import android.content.Intent;
 import android.app.Dialog;
 import android.widget.ArrayAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.button.MaterialButton;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import fpoly.vinv01.duanmau.Adapter.GioHangAdapter;
 import fpoly.vinv01.duanmau.CartManager;
 import fpoly.vinv01.duanmau.DAO.HoaDonDAO;
@@ -23,8 +27,11 @@ import fpoly.vinv01.duanmau.Model.HoaDon;
 import fpoly.vinv01.duanmau.Model.HoaDonChiTiet;
 import fpoly.vinv01.duanmau.Model.GioHang;
 import fpoly.vinv01.duanmau.R;
+
 import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.textfield.TextInputEditText;
+
 import fpoly.vinv01.duanmau.DAO.KhachHangDAO;
 import fpoly.vinv01.duanmau.Model.KhachHang;
 
@@ -61,10 +68,12 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
 
         etCustomerPhone.addTextChangedListener(new android.text.TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(android.text.Editable s) {
@@ -159,7 +168,9 @@ public class GioHangActivity extends AppCompatActivity implements GioHangAdapter
     }
 
     @Override
-    public void onQuantityChanged() { tinhTongTien(); }
+    public void onQuantityChanged() {
+        tinhTongTien();
+    }
 
     private void clickThanhToan() {
         if (CartManager.listGioHang.isEmpty()) {

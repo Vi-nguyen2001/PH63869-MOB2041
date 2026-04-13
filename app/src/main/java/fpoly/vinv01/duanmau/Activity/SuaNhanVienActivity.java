@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fpoly.vinv01.duanmau.Model.NhanVien;
 import fpoly.vinv01.duanmau.R;
+import fpoly.vinv01.duanmau.SecurityUtil;
 
 public class SuaNhanVienActivity extends ThemNhanVienActivity {
     private NhanVien currentNV;
@@ -75,7 +76,7 @@ public class SuaNhanVienActivity extends ThemNhanVienActivity {
         currentNV.setChucVu(arrChucVu[posCV]);
 
         if (!mkMoi.isEmpty()) {
-            currentNV.setMatKhau(mkMoi);
+            currentNV.setMatKhau(SecurityUtil.hashPassword(mkMoi));
         }
 
         if (dao.update(currentNV) > 0) {

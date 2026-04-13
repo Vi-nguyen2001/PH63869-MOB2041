@@ -10,6 +10,7 @@ import java.util.List;
 
 import fpoly.vinv01.duanmau.DbHelper;
 import fpoly.vinv01.duanmau.Model.NhanVien;
+import fpoly.vinv01.duanmau.SecurityUtil;
 
 public class NhanVienDAO {
     private SQLiteDatabase db;
@@ -126,22 +127,37 @@ public class NhanVienDAO {
         // Cập nhật mật khẩu cho nhân viên có mã tương ứng
         return db.update("NhanVien", values, "maNV = ?", new String[]{maNV});
     }
-    public boolean checkOldPassword(String maNV, String oldPass) {
+    public boolean checkOldPassword(String maNV, String oldPass) {//hàm này sẽ kiểm tra mật khẩu cũ có đúng không
         db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM NhanVien WHERE maNV = ? AND matKhau = ?";
-        Cursor cursor = db.rawQuery(sql, new String[]{maNV, oldPass});
-        boolean result = cursor.getCount() > 0;
-        cursor.close();
+        String sql = "SELECT matKhau FROM NhanVien WHERE maNV = ?";//lấy mật khẩu cũ trong bảng nhân viên
+        Cursor cursor = db.rawQuery(sql, new String[]{maNV});
+        boolean result = false;
+        if (cursor != null && cursor.moveToFirst()) {
+            String dbPass = cursor.getString(0);
+            if (dbPass.equals(oldPass)) {
+                result = true;
+            } else {
+                result = SecurityUtil.checkPassword(oldPass, dbPass);
+            }
+        }
+        if (cursor != null) cursor.close();
         return result;
     }
 
     public boolean checkLogin(String username, String password) {
         db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM NhanVien WHERE maNV = ? AND matKhau = ?", new String[]{username, password});
-        int count = cursor.getCount();
-        cursor.close();
-        return count >0;
-
+        Cursor cursor = db.rawQuery("SELECT matKhau FROM NhanVien WHERE maNV = ?", new String[]{username});
+        boolean result = false;
+        if (cursor != null && cursor.moveToFirst()) {
+            String dbPass = cursor.getString(0);
+            if (dbPass.equals(password)) {
+                result = true;
+            } else {
+                result = SecurityUtil.checkPassword(password, dbPass);
+            }
+        }
+        if (cursor != null) cursor.close();
+        return result;
     }
 
 }

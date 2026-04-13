@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import fpoly.vinv01.duanmau.DAO.NhanVienDAO;
 import fpoly.vinv01.duanmau.R;
+import fpoly.vinv01.duanmau.SecurityUtil;
 
 public class DoiMatKhauActivity extends AppCompatActivity {
 
@@ -77,7 +78,8 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                 return;
             }
 
-            int result = dao.updatePassword(maNV, newPass);
+            String hashedNewPass = SecurityUtil.hashPassword(newPass);
+            int result = dao.updatePassword(maNV, hashedNewPass);
             if (result > 0) {
                 Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = sharedPreferences.edit();

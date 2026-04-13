@@ -43,4 +43,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
+    implementation("org.mindrot:jbcrypt:0.4")
 }
